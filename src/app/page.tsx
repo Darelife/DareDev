@@ -124,6 +124,7 @@ export default function Home() {
   `,
   ];
 
+  
   useEffect(() => {
     if (!isAnimating) return;
 
