@@ -2,9 +2,9 @@ import React from "react";
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/about" },
+  { name: "Projects", href: "#projects" },
+  { name: "Blog", href: "#blog" },
+  { name: "About", href: "#about" },
 ];
 
 export default function Navbar() {
@@ -24,7 +24,7 @@ export default function Navbar() {
     >
       <div
         style={{
-          maxWidth: 1200,
+          // maxWidth: 1200,
           margin: "0 auto",
           display: "flex",
           alignItems: "center",
@@ -32,7 +32,9 @@ export default function Navbar() {
           position: "relative",
         }}
       >
-        <div style={{ fontWeight: 700, fontSize: "1.25rem" }}>DareDev</div>
+        <div style={{ fontWeight: 500, fontSize: "1.25rem" }}>
+          Darelife
+        </div>
         <button
           aria-label="Toggle menu"
           onClick={() => setMenuOpen((o) => !o)}
