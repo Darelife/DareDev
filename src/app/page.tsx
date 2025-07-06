@@ -288,7 +288,7 @@ export default function Home() {
       </a>
       {/* LinkedIn */}
       <a
-        href="https://www.linkedin.com/in/prakhar-bhandari13/"
+        href="https://www.linkedin.com/in/prakharbhandari13/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LinkedIn"
