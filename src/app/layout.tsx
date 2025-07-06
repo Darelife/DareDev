@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Prakhar Bhandari",
-  description: "Welcome to the Darelife's World",
+  description: "Welcome to Darelife's World",
 };
 
 export default function RootLayout({
