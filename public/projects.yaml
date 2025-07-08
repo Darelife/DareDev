@@ -1,0 +1,17 @@
+projects:
+  - title: "CodeforcesHelper | CF Extension"
+    desc: "Have 900+ users using the extension on the Chrome Webstore and Firefox Addons Store"
+    links:
+      - "https://chromewebstore.google.com/detail/codeforces-helper/ahoeafmlmoohkkalcickdnkifpfnolpj"
+      - "https://addons.mozilla.org/en-US/firefox/addon/codeforces-helper/"
+    techstack:
+      - "JavaScript"
+
+  - title: "XPIA Attack Demonstration | AI Agents"
+    desc: "Made a demo agent model using Crew AI, in which the agent was instructed to visit a website, and follow its instructions. And unbeknownst to it, it would make it mess up with the postgres database hosted via supabase"
+    links:
+      - "https://github.com/Darelife/xpia"
+    techstack:
+      - "Python"
+      - "Crew AI"
+      - "Gemini"

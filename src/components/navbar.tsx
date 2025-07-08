@@ -1,7 +1,7 @@
 import React from "react";
 
 const navLinks = [
-  { name: "Home", href: "/" },
+  { name: "Home", href: "#home" },
   { name: "Projects", href: "#projects" },
   { name: "Blog", href: "#blog" },
   { name: "About", href: "#about" },
@@ -9,6 +9,68 @@ const navLinks = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <nav
+        style={{
+          color: "#e3e3e3",
+          padding: "0.75rem 1.5rem",
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          backgroundColor: "rgba(0, 0, 0, 0.9)",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        <div
+          style={{
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            position: "relative",
+          }}
+        >
+          <div style={{ fontWeight: 500, fontSize: "1.25rem" }}>
+            Darelife
+          </div>
+          <ul 
+            style={{ 
+              display: "flex", 
+              gap: "2rem", 
+              listStyle: "none", 
+              margin: 0, 
+              padding: 0 
+            }}
+          >
+            {navLinks.map((link) => (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  style={{
+                    color: "#e3e3e3",
+                    textDecoration: "none",
+                    fontWeight: 500,
+                    transition: "color 0.2s",
+                    padding: "0.5rem",
+                    display: "block",
+                  }}
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav
@@ -24,7 +86,6 @@ export default function Navbar() {
     >
       <div
         style={{
-          // maxWidth: 1200,
           margin: "0 auto",
           display: "flex",
           alignItems: "center",
