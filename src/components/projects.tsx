@@ -1,7 +1,6 @@
 import React from "react";
 import { load } from 'js-yaml';
-import { motion } from 'framer-motion';
-import TextPressure from './TextPressure';
+import ScrollVelocity from './ScrollVelocity';
 
 export default function Projects() {
   const [projects, setProjects] = React.useState<any[]>([]);
@@ -70,27 +69,15 @@ export default function Projects() {
     <div className="bg-black text-white p-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
       <div className="max-w-4xl mx-auto">
         {/* Spacer to create gap after page.tsx animations */}
-        <div className="h-[20vh]"></div>
+        {/* <div className="h-[20vh]"></div> */}
         
         {/* Heading section */}
         <div className="pb-16 text-center">
-          <div style={{position: 'relative', height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <TextPressure
-              text="My Projects"
-              flex={true}
-              alpha={false}
-              stroke={false}
-              width={true}
-              weight={true}
-              italic={true}
-              textColor="#d1d5db"
-              strokeColor="#ff0000"
-              minFontSize={48}
-            />
-          </div>
+          <ScrollVelocity texts={['My Projects']} velocity={100} className="text-white" />
+          <ScrollVelocity texts={['Enjoy']} velocity={-75} className="text-white" />
         </div>
 
-        <div className="p-[20vh]"></div>
+        <div className="p-[3rem]"></div>
         
         {/* Projects section */}
         {/* <motion.div
