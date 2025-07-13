@@ -99,7 +99,7 @@ export default function Projects() {
           {projects.map((project, index) => (
             <div 
               key={index} 
-              className="relative overflow-hidden group bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-lg hover:shadow-red-500/20 transition-all duration-300 hover:translate-y-[-5px]"
+              className="relative overflow-hidden group bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-lg transition-all duration-300"
             >
               {/* Project Number Badge */}
               <div className="absolute top-0 right-0 bg-red-500/20 text-red-300 text-sm font-mono px-3 py-1 rounded-bl-lg">
