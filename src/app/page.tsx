@@ -234,7 +234,7 @@ export default function Home() {
         targetText
           .split('')
           .map(char => {
-            if (char === ' ' || char === '>') return char;
+            if (char === ' ') return char;
             return randomChars[Math.floor(Math.random() * randomChars.length)];
           })
           .join('')

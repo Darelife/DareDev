@@ -82,8 +82,22 @@ export default function Projects() {
         
         {/* Heading section */}
         <div className="pb-16 text-center">
-          <ScrollVelocity texts={['My Projects']} velocity={100} className="text-white" />
-          <ScrollVelocity texts={['Enjoy']} velocity={-75} className="text-white" />
+          <ScrollVelocity 
+            texts={['My Projects']} 
+            velocity={100} 
+            className="text-white"
+            decelerationFactor={0.93}
+            stopThreshold={0.08}
+            scrollDebounceTime={80}
+          />
+          <ScrollVelocity 
+            texts={['Enjoy']} 
+            velocity={-75} 
+            className="text-white"
+            decelerationFactor={0.93}
+            stopThreshold={0.08}
+            scrollDebounceTime={80}
+          />
         </div>
 
         <div className="p-[3rem]"></div>

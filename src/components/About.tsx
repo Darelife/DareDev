@@ -14,7 +14,12 @@ const About = () => {
   return (
     <section id="about" className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-black text-white">
       <div className="max-w-7xl mx-auto">
-        <ScrollVelocity texts={["About Me"]} />
+        <ScrollVelocity 
+          texts={["About Me"]} 
+          decelerationFactor={0.93}
+          stopThreshold={0.08}
+          scrollDebounceTime={80}
+        />
         <div className="mt-12 flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
           {/* Image Box - Hidden on screens smaller than md */}
           <motion.div 
