@@ -15,3 +15,52 @@ projects:
       - "Python"
       - "Crew AI"
       - "Gemini"
+
+  - title: "Multi-Variable Equation Solver"
+    desc: "Built a command-line tool in C++ that solves linear systems using Gauss-Jordan elimination and Cramer's Rule. It handles all edge cases: unique solutions, infinite solutions, or no solution at all."
+    links:
+      - "https://github.com/Darelife/MultiEquationSolver"
+    techstack:
+      - "C++"
+
+  - title: "PacMan | Network Packet Analyzer"
+    desc: "Built a real-time PCAPNG network analyzer for a 24-hour hackathon, placing 2nd out of 200+ teams. It captures packets using Scapy and Pyshark, filters and analyzes them, and streams insights like latency, jitter, and packet loss to an interactive Next.js dashboard."
+    techstack:
+      - "Next.js"
+      - "Flask"
+      - "Scapy"
+      - "Pyshark"
+
+  - title: "ACIAX | Academic Resource Platform"
+    desc: "Created a clean and responsive academic resource sharing site with Google login, Firebase backend, and TypeScript frontend. It now has over 3,000 monthly views and active student contributions."
+    links:
+      - "https://github.com/Darelife/aciax/"
+      - "https://aciax.vercel.app/"
+    techstack:
+      - "Next.js"
+      - "TypeScript"
+      - "Firebase"
+
+  - title: "AlgoManiaX Website"
+    desc: "Designed and maintained the AlgoManiaX platform website"
+    links:
+      - "https://algomaniax.vercel.app/"
+      - "https://github.com/darelife/algoxxx"
+    techstack:
+      - "Next.js"
+      - "TypeScript"
+
+  - title: "AlgoInstaAutomated"
+    desc: "Automated the generation of BGCL 6.0 content and stories for Instagram using a Python script. Helped keep the coding community updated with minimal manual effort."
+    links:
+      - "https://github.com/Darelife/AlgoInstaAutomated/"
+    techstack:
+      - "Python"
+
+  - title: "Synanit2.0 | Discord Bot"
+    desc: "Created a Discord bot to help out with the Algomanix Club's activites related to Codeforces"
+    links:
+      - "https://github.com/darelife/synanit2.0"
+    techstack:
+      - "Python"
+      - "Discord.py"
