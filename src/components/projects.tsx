@@ -1,12 +1,17 @@
 import React from "react";
 import { load } from 'js-yaml';
-import ScrollVelocity from './ScrollVelocity';
+// import ScrollVelocity from './ScrollVelocity';
+import BlurText from "./BlurText";
 
 export default function Projects() {
   const [projects, setProjects] = React.useState<any[]>([]);
   const [showProjects, setShowProjects] = React.useState(false);
   const projectsRef = React.useRef<HTMLDivElement>(null);
 
+  const [headingInView, setHeadingInView] = React.useState(false);
+  const headingRef = React.useRef<HTMLDivElement>(null);
+
+  // Observer for the projects section
   React.useEffect(() => {
     const projectsObserver = new IntersectionObserver(
       ([entry]) => {
@@ -32,6 +37,15 @@ export default function Projects() {
       }
     };
   }, []);
+
+  // Since our improved BlurText component now handles visibility detection internally,
+  // we don't need the separate heading observer anymore.
+  // We keep the headingRef for potential future use
+  
+  const handleAnimationComplete = () => {
+    console.log('Heading animation completed!');
+  };
+  
 
   React.useEffect(() => {
     fetch('/projects.yaml')
@@ -81,22 +95,44 @@ export default function Projects() {
         {/* <div className="h-[20vh]"></div> */}
         
         {/* Heading section */}
-        <div className="pb-16 text-center">
-          <ScrollVelocity 
-            texts={['My Projects']} 
-            velocity={100} 
-            className="text-white"
-            decelerationFactor={0.93}
-            stopThreshold={0.08}
-            scrollDebounceTime={80}
+        <div className="pb-16 text-center" ref={headingRef}>
+          {/* Always render, but force re-animation with key */}
+          <BlurText
+            text="MY PROJECTS"
+            delay={120}
+            animateBy="letters"
+            direction="top"
+            onAnimationComplete={handleAnimationComplete}
+            threshold={0.05}
+            rootMargin="-30px 0px -30px 0px"
+            className="text-5xl md:text-7xl font-bold tracking-tight text-white"
+            stepDuration={0.25}
+            style={{
+              fontFamily: "sans-serif",
+              fontWeight: "bold",
+              letterSpacing: "-0.02em", 
+              filter: "drop-shadow(0 4px 8px rgba(255,0,0,0.3))",
+              justifyContent: "center",
+              marginBottom: "0.5rem"
+            }}
           />
-          <ScrollVelocity 
-            texts={['Enjoy']} 
-            velocity={-75} 
-            className="text-white"
-            decelerationFactor={0.93}
-            stopThreshold={0.08}
-            scrollDebounceTime={80}
+          
+          <BlurText
+            text="WHAT I'VE BUILT"
+            delay={50}
+            animateBy="words"
+            direction="bottom"
+            threshold={0.05}
+            rootMargin="-30px 0px -30px 0px"
+            className="text-2xl md:text-3xl text-red-400 mb-8"
+            stepDuration={0.1}
+            style={{
+              fontFamily: "sans-serif",
+              fontWeight: "600",
+              letterSpacing: "0.05em",
+              justifyContent: "center",
+              opacity: 0.8
+            }}
           />
         </div>
 
