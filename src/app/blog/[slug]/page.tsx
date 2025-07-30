@@ -2,12 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 
-interface BlogPostProps {
-  params: { slug: string };
-}
-
-const BlogPost = async ({ params }: BlogPostProps) => {
-  const { slug } = params;
+const BlogPost = async ({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams?: Promise<Record<string, string | string[]>> }) => {
+  const { slug } = await params;
   
   // Read blogs from JSON file
   const blogsFilePath = path.join(process.cwd(), 'public', 'blogs.json');
