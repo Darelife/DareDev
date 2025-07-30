@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "first-blog",
+    "title": "My First Blog Post",
+    "description": "This is my very first blog post where I share my thoughts",
+    "contentFile": "first-blog.html",
+    "date": "2024-01-15",
+    "author": "DareDev",
+    "tags": ["personal", "introduction", "first-post"],
+    "readTime": 1,
+    "featured": true
+  }
+]
