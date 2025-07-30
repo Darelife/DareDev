@@ -20,7 +20,7 @@ const Blog = () => {
       <div className="max-w-4xl mx-auto">
       
       {/* Heading section */}
-      <div className="mt-10 p-16 text-center">
+      <div className="mt-16 p-16 text-center">
         <BlurText
         text="MY BLOG"
         delay={120}

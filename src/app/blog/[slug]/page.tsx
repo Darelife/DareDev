@@ -2,7 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 
-const BlogPost = async ({ params }: { params: { slug: string } }) => {
+interface BlogPostProps {
+  params: { slug: string };
+}
+
+const BlogPost = async ({ params }: BlogPostProps) => {
   const { slug } = params;
   
   // Read blogs from JSON file
@@ -124,13 +128,11 @@ const BlogPost = async ({ params }: { params: { slug: string } }) => {
   );
 };
 
-export const generateStaticParams = async () => {
+
+export async function generateStaticParams() {
   const blogsFilePath = path.join(process.cwd(), 'public', 'blogs.json');
   const blogsData = JSON.parse(fs.readFileSync(blogsFilePath, 'utf8'));
-
-  return blogsData.map((blog: any) => ({
-    slug: blog.slug,
-  }));
-};
+  return blogsData.map((blog: any) => ({ slug: blog.slug }));
+}
 
 export default BlogPost;
