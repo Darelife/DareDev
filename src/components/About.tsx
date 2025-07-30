@@ -22,21 +22,21 @@ const About = () => {
         />
         <div className="mt-12 flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
           {/* Image Box - Hidden on screens smaller than md */}
-          <motion.div 
+            <motion.div 
             ref={imageRef}
-            className="hidden md:block md:w-1/3 lg:w-1/4"
+            className="w-full md:w-1/3 lg:w-1/4 mb-8 md:mb-0"
             initial={{ opacity: 0, x: -50 }}
             animate={isImageInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-          >
+            >
             <div className="aspect-square bg-gray-800/30 border border-red-500/20 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/10 overflow-hidden">
               <img
-                src="/favicon.png"
-                alt="Profile"
-                className="w-full h-full object-cover rounded-none border-2 border-red-400 shadow"
+              src="/favicon.png"
+              alt="Profile"
+              className="w-full h-full object-cover rounded-none border-2 border-red-400 shadow"
               />
             </div>
-          </motion.div>
+            </motion.div>
 
           {/* Info Box */}
           <motion.div 
