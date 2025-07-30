@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 import BlurText from '../../components/BlurText';
+import Navbar from '../../components/navbar';
 
 const Blog = () => {
   const blogsFilePath = path.join(process.cwd(), 'public', 'blogs.json');
@@ -17,6 +18,7 @@ const Blog = () => {
 
   return (
     <div className="bg-black text-white p-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+      <Navbar />
       <div className="max-w-4xl mx-auto">
       
       {/* Heading section */}
