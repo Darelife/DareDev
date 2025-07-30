@@ -2,10 +2,10 @@
 import React from "react";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "Projects", href: "#projects" },
+  { name: "Home", href: "/#home" },
+  { name: "Projects", href: "/#projects" },
   { name: "Blog", href: "/blog" },
-  { name: "About", href: "#about" },
+  { name: "About", href: "/#about" },
 ];
 
 export default function Navbar() {
