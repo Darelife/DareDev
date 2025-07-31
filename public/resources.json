@@ -1,0 +1,70 @@
+{
+  "Reinforcement Learning": [
+    {
+      "title": "Deep Reinforcement Learning: CS 285 Fall 2023",
+      "description": "Comprehensive course on deep reinforcement learning covering policy gradients, actor-critic methods, model-based RL, and more.",
+      "url": "https://www.youtube.com/watch?v=VnpRp7ZglfA",
+      "status": 0
+    },
+    {
+      "title": "The Fastest Introduction to Reinforcement Learning on the Internet",
+      "description": "A very well thought 1:33:27 hr video on RL recommended by a friend",
+      "url": "https://www.youtube.com/watch?v=VnpRp7ZglfA",
+      "status": 0
+    }
+  ],
+  "Machine Learning": [
+    {
+      "title": "3Blue1Brown - Neural Networks",
+      "description": "Beautiful visual explanations of how neural networks work from the ground up.",
+      "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+      "status": 1
+    }
+  ],
+  "Web Development": [
+    {
+      "title": "React Documentation",
+      "description": "Official React documentation with modern hooks and best practices.",
+      "url": "https://react.dev/",
+      "status": 2
+    },
+    {
+      "title": "Next.js Tutorial",
+      "description": "Learn Next.js by building a full-stack web application.",
+      "url": "https://nextjs.org/learn",
+      "status": 2
+    },
+    {
+      "title": "TypeScript Handbook",
+      "description": "Complete guide to TypeScript.",
+      "url": "https://www.typescriptlang.org/docs/",
+      "status": 2
+    },
+    {
+      "title": "Tailwind CSS Documentation",
+      "description": "Utility-first CSS framework documentation.",
+      "url": "https://tailwindcss.com/docs",
+      "status": 2
+    }
+  ],
+  "Research & Papers": [
+    {
+      "title": "Papers With Code",
+      "description": "The latest in machine learning papers, code, and evaluation tables.",
+      "url": "https://paperswithcode.com/",
+      "status": 0
+    },
+    {
+      "title": "Arxiv Sanity",
+      "description": "A web interface for browsing, search and filtering recent arxiv submissions.",
+      "url": "http://arxiv-sanity.com/",
+      "status": 0
+    },
+    {
+      "title": "Google Scholar",
+      "description": "Search for scholarly literature across disciplines.",
+      "url": "https://scholar.google.com/",
+      "status": 0
+    }
+  ]
+}
