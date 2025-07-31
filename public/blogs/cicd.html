@@ -1,0 +1,108 @@
+<h1>CI CD Pipelines</h1>
+CI/CD stands for "Continuous Integration and Continuous Delivery/Deployment".
+Now, it's all about making a proper workflow that tests whether the software is
+working correctly, and initiates the deployment process. So today, lets check
+out how to use github actions to implement this easily.
+<br />
+<br />
+So first of all, it comes down to the file structure.
+<ul>
+  <li>
+    <strong>.github/workflows/</strong>: This is the directory where all your
+    GitHub Actions workflow files will reside.
+  </li>
+  <li>
+    <strong>main.yml</strong>: This is an example workflow file that defines the
+    steps for your CI/CD pipeline.
+  </li>
+</ul>
+<p>Here is my <code>main.yml</code> file for this website:</p>
+<pre>
+<code>
+name: Build Check
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run build
+        run: npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy application
+        run: echo "Deploying application..."
+</code>
+</pre>
+<p>
+  This workflow will trigger on every push/pr to all the branches, 
+  (though we could also specify the branch, as you'll see in the example below),
+  install dependencies, and check if it builds. I dont need to do anything else
+  in this project atleast as it's just a frontend project. And most of the
+  times, there's just a random build error. You can also make the
+  <code>on</code> parameter look like this
+<pre>
+<code>
+on:
+push:
+  branches:
+    - main
+pull_request:
+  branches:
+    - main
+</code>
+</pre>
+</p>
+<p>
+<h2>Explaining the YML File</h2>
+<p>
+  This file defines a GitHub Actions workflow for automating tasks like
+  building and deploying your application. Let's break down the major
+  components.
+</p>
+<h3>Name: Workflow Name</h3>
+<p>
+  This defines the name of the workflow as it appears in the GitHub Actions UI.
+  In this case, it's: <code>Build Check</code>.
+</p>
+<h3>On: Trigger Events</h3>
+<p>
+  This tells GitHub when to run the workflow. You can specify events like
+  <code>push</code>, <code>pull_request</code>, etc. In this, you can also 
+  specify the branch it's supposed to work on.
+</p>
+<h3>Jobs: Define Individual Tasks</h3> 
+<p> 
+  Each job is a set of steps that runs in the specified environment. In our case, 
+  there are two jobs: <code>build</code> and <code>deploy</code>. 
+</p>
+<ul>
+  <li>
+    <strong><code>runs-on</code></strong>: This tells GitHub which VM to use. In this
+    case, we chose the latest Ubuntu virtual environment.
+  </li>
+  <li>
+    <strong><code>steps</code></strong>: They just consist of the name, 
+    and the terminal command based on the VM selected.
+  </li>
+</ul>

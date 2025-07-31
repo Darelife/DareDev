@@ -4,10 +4,21 @@
     "title": "My First Blog Post",
     "description": "This is my very first blog post where I share my thoughts",
     "contentFile": "first-blog.html",
-    "date": "2024-01-15",
-    "author": "DareDev",
+    "date": "2025-07-30",
+    "author": "Prakhar Bhandari",
     "tags": ["personal", "introduction", "first-post"],
     "readTime": 1,
+    "featured": true
+  },
+  {
+    "slug":"CI-CD",
+    "title": "Setting Up CI/CD via Github Actions",
+    "description": "CI/CD is an integral part of devops. Let's explore it.",
+    "contentFile": "cicd.html",
+    "date": "2025-07-31",
+    "author": "Prakhar Bhandari",
+    "tags": ["cicd", "github", "devops"],
+    "readTime": 2,
     "featured": true
   }
 ]
