@@ -21,6 +21,14 @@
       "status": 1
     }
   ],
+  "Competitive Programming": [
+    {
+      "title": "DP Mashup",
+      "description": "A codeforces mashup on DP made by Colin Galen",
+      "url": "https://codeforces.com/contestInvitation/dbdc3d98d7378b34a4a47114864882815a7669e9",
+      "status": 1
+    }
+  ],
   "Web Development": [
     {
       "title": "React Documentation",
