@@ -19,6 +19,12 @@
       "description": "Beautiful visual explanations of how neural networks work from the ground up.",
       "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
       "status": 1
+    },
+    {
+      "title":"Intro to Machine Learning",
+      "description": "Video series + Slides | Kamperh | Data Analytics 414",
+      "url" : "https://www.kamperh.com/data414/",
+      "status": 0
     }
   ],
   "Competitive Programming": [
