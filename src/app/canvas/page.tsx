@@ -4,11 +4,16 @@ import React, { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { createClient } from "@supabase/supabase-js";
 import "@excalidraw/excalidraw/index.css";
-import { restore } from "@excalidraw/excalidraw";
 
-// Dynamically import Excalidraw to avoid SSR issues
+let restore: any;
+
+// Dynamically import Excalidraw + restore to avoid SSR issues
 const Excalidraw: any = dynamic(
-  async () => (await import("@excalidraw/excalidraw")).Excalidraw,
+  async () => {
+    const module = await import("@excalidraw/excalidraw");
+    restore = module.restore; // assign restore only in browser
+    return module.Excalidraw;
+  },
   { ssr: false }
 );
 
@@ -24,7 +29,6 @@ export default function Page() {
   const [initialData, setInitialData] = useState<any>(null);
   const saveTimeout = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Load the drawing from Supabase
   useEffect(() => {
     async function loadDrawing() {
       try {
@@ -39,17 +43,16 @@ export default function Page() {
           return;
         }
 
-        if (data?.data) {
-          // Use restore() to normalize elements and appState
+        if (data?.data && restore) {
           let restored = restore(data.data, null, null);
 
-          // Ensure collaborators is always a Map
-          if (!(restored.appState.collaborators instanceof Map)) {
-            restored.appState.collaborators = new Map();
+          // Ensure collaborators is always an array
+          if (!Array.isArray(restored.appState.collaborators)) {
+            restored.appState.collaborators = [];
           }
 
           setInitialData(restored);
-          console.log("✅ Loaded drawing from Supabase");
+          console.log("✅ Loaded drawing");
         }
       } catch (err) {
         console.error("Failed to load drawing:", err);
@@ -59,7 +62,6 @@ export default function Page() {
     loadDrawing();
   }, []);
 
-  // Handle changes and save
   const handleChange = useCallback(
     (elements: readonly any[], appState: any, files: any) => {
       if (!elements) return;
@@ -85,32 +87,20 @@ export default function Page() {
           );
 
           if (error) console.error("❌ Save failed:", error.message);
-          else console.log("💾 Drawing saved to Supabase at", istTime);
+          else console.log("💾 Drawing saved at", istTime);
         } catch (err: any) {
           console.error("❌ Save failed:", err.message);
         }
-      }, 1500); // 1.5s debounce
+      }, 1500);
     },
     []
   );
 
   return (
-    <main
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        width: "100%",
-      }}
-    >
+    <main style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <div style={{ flex: 1 }}>
-        {/* Only render when initialData is ready */}
-        {initialData && (
-          <Excalidraw
-            initialData={initialData}
-            onChange={handleChange}
-          />
-        )}
+        {/* Only render after restore is loaded and initialData exists */}
+        {initialData && <Excalidraw initialData={initialData} onChange={handleChange} />}
       </div>
     </main>
   );
