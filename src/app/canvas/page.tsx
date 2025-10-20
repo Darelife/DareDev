@@ -105,7 +105,7 @@ export default function Page() {
     } catch (err: any) {
       console.error("❌ Save failed:", err.message);
     }
-    }, 1500); // 1.5s debounce
+    }, 20000); // 20s debounce
   },
   []
   );
