@@ -201,7 +201,7 @@ export default function Page() {
       <div style={{ flex: 1 }}>
         {/* Only render when initialData is ready */}
         {initialData ? (
-          <Excalidraw initialData={initialData} onChange={handleChange} />
+          <Excalidraw initialData={initialData} onChange={handleChange} validateEmbeddable={() => true} />
         ) : (
           <div>Loading Canvas...</div>
         )}
