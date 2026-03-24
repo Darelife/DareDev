@@ -1,166 +1,263 @@
-import React from "react";
-import fs from 'fs';
-import path from 'path';
+'use client';
+import React from 'react';
 import Link from 'next/link';
-import BlurText from '../../components/BlurText';
 import Navbar from '../../components/navbar';
 
-const Blog = () => {
-  const blogsFilePath = path.join(process.cwd(), 'public', 'blogs.json');
-  const blogsData = JSON.parse(fs.readFileSync(blogsFilePath, 'utf8'));
+/* ─── Animated heading (mirrors ProjectsHeading) ─────────────────────── */
+function BlogHeading() {
+  const [visible, setVisible] = React.useState(false);
+  const ref = React.useRef<HTMLDivElement>(null);
 
-  const sortedBlogs = blogsData.sort((a: any, b: any) => {
-    if (a.date && b.date) {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    }
-    return 0;
-  });
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  const letters = 'BLOG'.split('');
+
+  return (
+    <div ref={ref} className="relative flex flex-col items-center gap-5 py-4">
+      {/* Top line */}
+      <div
+        className="w-full flex justify-center transition-all duration-700"
+        style={{ opacity: visible ? 1 : 0, transform: visible ? 'translateY(0)' : 'translateY(-16px)', transitionDelay: '0ms' }}
+      >
+        <div
+          className="h-px w-full"
+          style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 30%, rgba(220,38,38,0.6) 70%, transparent 100%)' }}
+        />
+      </div>
+
+      {/* Letter-by-letter title */}
+      <div className="flex items-end gap-0.5 sm:gap-1 pb-2" aria-label="Blog">
+        {letters.map((letter, i) => (
+          <span
+            key={i}
+            className="inline-block font-black leading-none select-none"
+            style={{
+              fontSize: 'clamp(3.5rem, 10vw, 7rem)',
+              fontFamily: 'var(--font-inter), Inter, sans-serif',
+              color: visible ? '#fff' : 'transparent',
+              textShadow: visible ? '0 0 40px rgba(220,38,38,0.25)' : 'none',
+              transform: visible ? 'translateY(0) skewX(-4deg)' : 'translateY(60px) skewX(-4deg)',
+              opacity: visible ? 1 : 0,
+              transition: `transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, color 0.4s ease`,
+              transitionDelay: `${150 + i * 55}ms`,
+              letterSpacing: '-0.03em',
+            }}
+          >
+            {letter}
+          </span>
+        ))}
+      </div>
+
+      {/* Underline bar */}
+      <div className="relative w-full flex justify-center">
+        <div
+          className="h-px transition-all duration-700"
+          style={{
+            width: visible ? '100%' : '0%',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 30%, rgba(220,38,38,0.6) 70%, transparent 100%)',
+            transitionDelay: '700ms',
+          }}
+        />
+        <div
+          className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-500"
+          style={{
+            background: 'rgba(220,38,38,0.9)',
+            boxShadow: '0 0 8px 2px rgba(220,38,38,0.5)',
+            opacity: visible ? 1 : 0,
+            transitionDelay: '900ms',
+          }}
+        />
+      </div>
+
+      {/* Subtitle */}
+      <p
+        className="text-xs sm:text-sm tracking-widest uppercase transition-all duration-700"
+        style={{
+          color: 'rgba(255,255,255,0.3)',
+          fontFamily: "'Ubuntu Mono', monospace",
+          letterSpacing: '0.25em',
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(12px)',
+          transitionDelay: '800ms',
+        }}
+      >
+        thoughts &amp; tutorials
+      </p>
+    </div>
+  );
+}
+
+/* ─── Main component ─────────────────────────────────────────────────── */
+export default function Blog() {
+  const [blogs, setBlogs] = React.useState<any[]>([]);
+  const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    fetch('/blogs.json')
+      .then(res => res.json())
+      .then((data: any[]) => {
+        const sorted = [...data].sort((a, b) => {
+          if (a.date && b.date) return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return 0;
+        });
+        setBlogs(sorted);
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <>
       <Navbar />
-      <div className="bg-black text-white p-4" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
-        <div className="max-w-4xl mx-auto">
-        
-        {/* Heading section */}
-        <div className="mt-16 p-16 text-center">
-          <BlurText
-          text="MY BLOG"
-          delay={120}
-          animateBy="letters"
-          direction="top"
-          threshold={0.05}
-          rootMargin="-30px 0px -30px 0px"
-          className="text-5xl md:text-7xl font-bold tracking-tight text-white"
-          stepDuration={0.25}
-          style={{
-            fontFamily: "sans-serif",
-            fontWeight: "bold",
-            letterSpacing: "-0.02em", 
-            filter: "drop-shadow(0 4px 8px rgba(255,0,0,0.3))",
-            justifyContent: "center",
-            marginBottom: "0.5rem"
-          }}
-          />
-          
-          <BlurText
-          text="THOUGHTS & TUTORIALS"
-          delay={50}
-          animateBy="words"
-          direction="bottom"
-          threshold={0.05}
-          rootMargin="-30px 0px -30px 0px"
-          className="text-2xl md:text-3xl text-red-400 mb-8"
-          stepDuration={0.1}
-          style={{
-            fontFamily: "sans-serif",
-            fontWeight: "600",
-            letterSpacing: "0.05em",
-            justifyContent: "center",
-            opacity: 0.8
-          }}
-          />
-        </div>
+      <div
+        className="min-h-screen bg-black text-white px-4 sm:px-8 py-8"
+        style={{ fontFamily: "'Ubuntu Mono', monospace" }}
+      >
+        <div className="max-w-5xl mx-auto">
 
-        <div className="p-[3rem]"></div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {sortedBlogs.map((blog: any, index: number) => (
-          <div 
-            key={index} 
-            className="relative overflow-hidden group bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-lg transition-all duration-300"
-          >
-            <div className="absolute top-0 right-0 bg-red-500/20 text-red-300 text-sm font-mono px-3 py-1 rounded-bl-lg">
-            #{index + 1}
-            </div>
-            
-            <div className="p-6">
-            {/* Blog Title */}
-            <h3 className="text-red-400 text-2xl font-bold mb-3 border-b border-gray-700 pb-3">
-              <Link href={`/blog/${blog.slug}`} className="hover:underline">
-              {blog.title}
-              </Link>
-            </h3>
-            {/* Blog Description */}
-            <div className="text-gray-300 mb-6 leading-relaxed">
-              {blog.description}
-            </div>
-            
-            <div className="flex flex-wrap gap-4 items-center justify-between">
-              {/* Tags and Metadata */}
-              <div className="flex-grow">
-              {/* Metadata row */}
-              <div className="flex flex-wrap gap-3 mb-3 text-xs text-gray-400">
-                {blog.date && (
-                <div className="flex items-center gap-1">
-                  <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                  </svg>
-                  {new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                </div>
-                )}
-                <div className="flex items-center gap-1">
-                <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                </svg>
-                {blog.readTime} min read
-                </div>
-                <div className="flex items-center gap-1">
-                <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
-                {blog.author}
-                </div>
-              </div>
-              
-              {/* Tags */}
-              {blog.tags && blog.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2">
-                {blog.tags.slice(0, 3).map((tag: string, i: number) => (
-                  <span key={i} className="bg-gray-800/50 text-gray-300 px-2.5 py-1 text-xs rounded-md border border-gray-700 hover:border-red-500/30 transition-colors">
-                  #{tag}
-                  </span>
-                ))}
-                {blog.tags.length > 3 && (
-                  <span className="text-gray-400 text-xs px-2.5 py-1">
-                  +{blog.tags.length - 3} more
-                  </span>
-                )}
-                </div>
-              )}
-              </div>
-              
-              {/* Read More Link */}
-              <div className="flex gap-3 ml-auto">
-              <div className="relative group/link z-10">
-                <Link 
-                href={`/blog/${blog.slug}`}
-                className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-800 hover:bg-red-500/30 text-white hover:text-white transition-colors"
-                aria-label="Read blog post"
+          {/* ── Heading ── */}
+          <BlogHeading />
+
+          {/* ── Gap ── */}
+          <div className="mt-16 sm:mt-20" />
+
+          {/* ── Blog List ── */}
+          <div className="flex flex-col divide-y divide-white/5">
+            {blogs.map((blog, index) => {
+              const isHovered = hoveredIndex === index;
+              return (
+                <div
+                  key={index}
+                  className="group relative py-7 sm:py-8 pl-5 sm:pl-8 pr-3 sm:pr-6 transition-all duration-300 cursor-default"
+                  style={{
+                    background: isHovered
+                      ? 'linear-gradient(90deg, rgba(220,38,38,0.06) 0%, transparent 80%)'
+                      : 'transparent',
+                  }}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
                 >
-                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M13 12h7l-3 3V9l3 3h-7V5l5 5-5 5v-3z"/>
-                  <path d="M3 5v14h8v-2H5V7h6V5H3z"/>
-                </svg>
-                </Link>
-                {/* Tooltip */}
-                <div className="fixed z-50 opacity-0 invisible group-hover/link:opacity-100 group-hover/link:visible transition-all duration-200 -translate-y-full -translate-x-1/2 left-1/2 top-0 pointer-events-none mb-3 transform">
-                <div className="bg-black/90 text-white text-xs px-3 py-1.5 rounded-md shadow-lg whitespace-nowrap">
-                  Read Article
+                  {/* Left glow bar */}
+                  <div
+                    className="absolute left-0 top-4 bottom-4 w-[2px] rounded-full transition-all duration-300"
+                    style={{
+                      background: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.05)',
+                      boxShadow: isHovered ? '0 0 10px 2px rgba(220,38,38,0.45)' : 'none',
+                    }}
+                  />
+
+                  {/* Row: index + content */}
+                  <div className="flex gap-4 sm:gap-8 items-start">
+                    {/* Index number */}
+                    <div
+                      className="flex-shrink-0 w-7 text-right pt-0.5 tabular-nums transition-colors duration-300"
+                      style={{
+                        color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.13)',
+                        fontSize: '0.75rem',
+                      }}
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </div>
+
+                    {/* Main content */}
+                    <div className="flex-1 min-w-0">
+                      {/* Title */}
+                      <Link href={`/blog/${blog.slug}`} className="block">
+                        <h2
+                          className="font-semibold leading-snug mb-2.5 transition-colors duration-300 hover:underline"
+                          style={{
+                            fontSize: 'clamp(0.95rem, 2.5vw, 1.15rem)',
+                            color: isHovered ? '#fff' : 'rgba(255,255,255,0.82)',
+                            fontFamily: 'Inter, sans-serif',
+                            letterSpacing: '-0.01em',
+                          }}
+                        >
+                          {blog.title}
+                        </h2>
+                      </Link>
+
+                      {/* Description */}
+                      <p
+                        className="text-sm leading-relaxed mb-4 transition-colors duration-300"
+                        style={{
+                          color: isHovered ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.38)',
+                          fontFamily: 'Inter, sans-serif',
+                          maxWidth: '62ch',
+                        }}
+                      >
+                        {blog.description}
+                      </p>
+
+                      {/* Meta + tags + link row */}
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                        {/* Date */}
+                        {blog.date && (
+                          <span
+                            className="text-[11px] transition-colors duration-300"
+                            style={{ color: isHovered ? 'rgba(220,38,38,0.7)' : 'rgba(255,255,255,0.22)' }}
+                          >
+                            {new Date(blog.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                          </span>
+                        )}
+
+                        {/* Read time */}
+                        {blog.readTime && (
+                          <span
+                            className="text-[11px] transition-colors duration-300"
+                            style={{ color: isHovered ? 'rgba(220,38,38,0.7)' : 'rgba(255,255,255,0.22)' }}
+                          >
+                            {blog.readTime} min read
+                          </span>
+                        )}
+
+                        {/* Tags as mono pills */}
+                        {blog.tags?.slice(0, 3).map((tag: string, i: number) => (
+                          <span
+                            key={i}
+                            className="text-[11px] px-2 py-0.5 rounded-sm border transition-all duration-300"
+                            style={{
+                              borderColor: isHovered ? 'rgba(220,38,38,0.45)' : 'rgba(255,255,255,0.1)',
+                              color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.32)',
+                              letterSpacing: '0.04em',
+                            }}
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+
+                        {/* Push link right */}
+                        <div className="flex-1 hidden sm:block" />
+
+                        {/* Read link */}
+                        <Link
+                          href={`/blog/${blog.slug}`}
+                          className="flex items-center gap-1.5 text-[11px] transition-all duration-200"
+                          style={{
+                            color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.28)',
+                            textDecoration: 'none',
+                            letterSpacing: '0.04em',
+                          }}
+                        >
+                          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7z" />
+                          </svg>
+                          <span>Read</span>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="w-2 h-2 bg-black/90 transform rotate-45 absolute -bottom-1 left-1/2 -translate-x-1/2"></div>
-                </div>
-              </div>
-              </div>
-            </div>
-            </div>
+              );
+            })}
           </div>
-          ))}
-        </div>
         </div>
       </div>
     </>
   );
-};
-
-export default Blog;
+}

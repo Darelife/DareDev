@@ -1,6 +1,31 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+
+// Guard against Node runtimes started with an invalid --localstorage-file flag.
+if (
+  typeof window === "undefined" &&
+  typeof globalThis.localStorage !== "undefined" &&
+  typeof globalThis.localStorage.getItem !== "function"
+) {
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    value: {
+      get length() {
+        return 0;
+      },
+      clear() {},
+      getItem() {
+        return null;
+      },
+      key() {
+        return null;
+      },
+      removeItem() {},
+      setItem() {},
+    },
+  });
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,11 +37,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "900"],
+});
+
 export const metadata: Metadata = {
   title: "Prakhar Bhandari",
   description: "Welcome to Darelife's World",
   manifest: "/manifest.json",
-  themeColor: "#ef4444",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -25,14 +55,16 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.png",
     apple: "/favicon.png"
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    viewportFit: "cover"
   }
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+  themeColor: "#ef4444"
 };
 
 export default function RootLayout({
@@ -51,7 +83,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.png" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
         {children}
         <script defer src="https://cloud.umami.is/script.js" data-website-id="f7a897c7-6d92-4b1d-a750-84ef78402202"></script>
