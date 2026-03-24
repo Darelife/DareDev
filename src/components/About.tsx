@@ -201,11 +201,11 @@ export default function About() {
                 className="leading-[1.9] text-white/50"
                 style={{ ...inter, fontSize: 'clamp(0.875rem, 1.2vw, 0.975rem)' }}
               >
-                Started in 2020 when the pandemic hit — boredom turned into a Discord bot,
+                Started in 2020 when the pandemic hit. Boredom turned into a Discord bot,
                 which turned into a full-blown obsession. Went from Python to C, C++, JavaScript,
                 React, and GoLang. Competed on Codeforces, peaked at{' '}
                 <span className="text-white/78 font-medium">1635</span>, shipped a browser extension
-                to <span className="text-white/78 font-medium">900+ users</span>, and
+                to <span className="text-white/78 font-medium">1000+ users</span>, and
                 built academic platforms with thousands of monthly visitors.
               </p>
               <p
