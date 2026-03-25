@@ -51,6 +51,27 @@ function ProjectsHeading() {
   return (
     <div ref={ref} className="relative flex flex-col items-center gap-5 py-4">
 
+      {/* Ghost background text */}
+      <div
+        className="pointer-events-none absolute inset-0 flex items-center justify-center select-none"
+        aria-hidden="true"
+      >
+        <span
+          className="font-black leading-none whitespace-nowrap"
+          style={{
+            fontSize: 'clamp(6rem, 22vw, 18rem)',
+            fontFamily: 'var(--font-inter), Inter, sans-serif',
+            letterSpacing: '-0.04em',
+            color: '#fff',
+            opacity: visible ? 0.04 : 0,
+            transition: 'opacity 1.5s ease',
+            transitionDelay: '200ms',
+          }}
+        >
+          PROJECTS
+        </span>
+      </div>
+
       {/* Top line */}
       <div
         className="w-full flex justify-center transition-all duration-700"
@@ -190,7 +211,7 @@ export default function Projects() {
                   <div
                     className="flex-shrink-0 w-7 text-right pt-0.5 tabular-nums transition-colors duration-300"
                     style={{
-                      color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.13)',
+                      color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.2)',
                       fontSize: '0.75rem',
                       fontFamily: "'Ubuntu Mono', monospace",
                     }}

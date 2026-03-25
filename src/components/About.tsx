@@ -48,7 +48,7 @@ export default function About() {
           className="font-black text-white leading-none whitespace-nowrap"
           style={{ fontSize: 'clamp(6rem, 22vw, 18rem)', ...inter, letterSpacing: '-0.04em' }}
           initial={{ opacity: 0 }}
-          animate={sectionVisible ? { opacity: 0.025 } : { opacity: 0 }}
+          animate={sectionVisible ? { opacity: 0.04 } : { opacity: 0 }}
           transition={{ duration: 1.5, ease: 'easeOut', delay: 0.2 }}
         >
           PRAKHAR

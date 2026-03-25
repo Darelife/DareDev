@@ -87,23 +87,7 @@ export default function RootLayout({
       >
         {children}
         <script defer src="https://cloud.umami.is/script.js" data-website-id="f7a897c7-6d92-4b1d-a750-84ef78402202"></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                      console.log('SW registered: ', registration);
-                    })
-                    .catch(function(registrationError) {
-                      console.log('SW registration failed: ', registrationError);
-                    });
-                });
-              }
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>{for(let sw of r)sw.unregister();})}` }} />
       </body>
     </html>
   );

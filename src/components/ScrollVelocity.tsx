@@ -135,7 +135,7 @@ function VelocityText({
   
   // Monitor scroll velocity to detect active scrolling
   useEffect(() => {
-    const unsubscribe = smoothVelocity.onChange((value) => {
+    const unsubscribe = smoothVelocity.on("change", (value) => {
       // If there's meaningful velocity, we're scrolling
       if (Math.abs(value) > 15) {
         setIsScrolling(true);
