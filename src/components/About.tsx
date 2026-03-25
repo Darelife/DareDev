@@ -120,7 +120,7 @@ export default function About() {
             </div>
 
             {/* Facts list */}
-            <div className="max-w-xs mx-auto lg:mx-0 w-full divide-y divide-white/[0.06]">
+            <div className="max-w-xs mx-auto lg:mx-0 w-full divide-y divide-white/6">
               {FACTS.map(({ key, val }, i) => (
                 <motion.div
                   key={key}
