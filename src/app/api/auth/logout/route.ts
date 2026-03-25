@@ -1,10 +1,12 @@
 import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+const SESSION_COOKIE = 'canvas-session';
+
+export async function POST() {
   try {
     const cookieStore = await cookies();
-    cookieStore.delete('canvas-session');
+    cookieStore.delete(SESSION_COOKIE);
 
     return NextResponse.json(
       { success: true, message: 'Logged out' },

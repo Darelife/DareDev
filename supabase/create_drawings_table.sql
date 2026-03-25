@@ -1,20 +1,39 @@
--- Full reset + recreate script for canvas persistence
+-- Canvas multi-user schema (users, drawings, drawing_access)
 -- Safe to run multiple times.
 
 BEGIN;
 
--- Ensure required extension exists.
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 1) Table
+CREATE TABLE IF NOT EXISTS public.users (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  username text UNIQUE NOT NULL,
+  password_hash text NOT NULL,
+  role text NOT NULL CHECK (role IN ('admin', 'user')),
+  created_at timestamptz NOT NULL DEFAULT timezone('utc', now())
+);
+
 CREATE TABLE IF NOT EXISTS public.drawings (
-  id text PRIMARY KEY,
-  data jsonb NOT NULL DEFAULT '{}'::jsonb,
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  title text,
+  data jsonb NOT NULL DEFAULT jsonb_build_object(
+    'elements', '[]'::jsonb,
+    'appState', '{}'::jsonb,
+    'files', '{}'::jsonb
+  ),
+  created_by uuid REFERENCES public.users(id),
   created_at timestamptz NOT NULL DEFAULT timezone('utc', now()),
   updated_at timestamptz NOT NULL DEFAULT timezone('utc', now())
 );
 
--- Keep `updated_at` current on every update.
+CREATE TABLE IF NOT EXISTS public.drawing_access (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  drawing_id uuid NOT NULL REFERENCES public.drawings(id) ON DELETE CASCADE,
+  user_id uuid NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  created_at timestamptz NOT NULL DEFAULT timezone('utc', now()),
+  UNIQUE (drawing_id, user_id)
+);
+
 CREATE OR REPLACE FUNCTION public.set_updated_at()
 RETURNS trigger
 LANGUAGE plpgsql
@@ -31,53 +50,44 @@ BEFORE UPDATE ON public.drawings
 FOR EACH ROW
 EXECUTE FUNCTION public.set_updated_at();
 
--- 2) Indexes
-CREATE INDEX IF NOT EXISTS idx_drawings_updated_at
-  ON public.drawings (updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_users_username ON public.users (username);
+CREATE INDEX IF NOT EXISTS idx_drawings_updated_at ON public.drawings (updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_drawing_access_user_id ON public.drawing_access (user_id);
+CREATE INDEX IF NOT EXISTS idx_drawing_access_drawing_id ON public.drawing_access (drawing_id);
 
--- 3) Security
+-- RLS can remain disabled because API routes use service-role key on the backend.
+-- If you later move to user-level Supabase auth, re-enable and add per-user policies.
 ALTER TABLE public.drawings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.drawing_access ENABLE ROW LEVEL SECURITY;
 
--- Start clean to avoid duplicate-policy errors on reruns.
-DROP POLICY IF EXISTS "drawings_select_default_canvas" ON public.drawings;
-DROP POLICY IF EXISTS "drawings_insert_default_canvas" ON public.drawings;
-DROP POLICY IF EXISTS "drawings_update_default_canvas" ON public.drawings;
+DROP POLICY IF EXISTS "deny_all_users" ON public.users;
+DROP POLICY IF EXISTS "deny_all_drawings" ON public.drawings;
+DROP POLICY IF EXISTS "deny_all_drawing_access" ON public.drawing_access;
 
--- Your app always reads/writes id = 'default-canvas'.
--- Allow anon + authenticated for this single row only.
-CREATE POLICY "drawings_select_default_canvas"
-ON public.drawings
-FOR SELECT
+CREATE POLICY "deny_all_users" ON public.users
+FOR ALL
 TO anon, authenticated
-USING (id = 'default-canvas');
+USING (false)
+WITH CHECK (false);
 
-CREATE POLICY "drawings_insert_default_canvas"
-ON public.drawings
-FOR INSERT
+CREATE POLICY "deny_all_drawings" ON public.drawings
+FOR ALL
 TO anon, authenticated
-WITH CHECK (id = 'default-canvas');
+USING (false)
+WITH CHECK (false);
 
-CREATE POLICY "drawings_update_default_canvas"
-ON public.drawings
-FOR UPDATE
+CREATE POLICY "deny_all_drawing_access" ON public.drawing_access
+FOR ALL
 TO anon, authenticated
-USING (id = 'default-canvas')
-WITH CHECK (id = 'default-canvas');
+USING (false)
+WITH CHECK (false);
 
--- Explicit grants (usually present in Supabase, but included for robustness).
 GRANT USAGE ON SCHEMA public TO anon, authenticated;
-GRANT SELECT, INSERT, UPDATE ON public.drawings TO anon, authenticated;
 
--- 4) Seed default row so GET works immediately.
-INSERT INTO public.drawings (id, data)
-VALUES (
-  'default-canvas',
-  jsonb_build_object(
-    'elements', '[]'::jsonb,
-    'appState', jsonb_build_object('collaborators', jsonb_build_object()),
-    'files', jsonb_build_object()
-  )
-)
-ON CONFLICT (id) DO NOTHING;
+-- Initial admin seed (replace password hash first):
+-- INSERT INTO public.users (username, password_hash, role)
+-- VALUES ('admin', '$2b$12$REPLACE_WITH_BCRYPT_HASH', 'admin')
+-- ON CONFLICT (username) DO NOTHING;
 
 COMMIT;

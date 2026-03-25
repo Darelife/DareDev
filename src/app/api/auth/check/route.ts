@@ -1,21 +1,22 @@
 import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { verifySessionToken } from '@/lib/auth';
 
-export async function GET(request: NextRequest) {
+const SESSION_COOKIE = 'canvas-session';
+
+export async function GET() {
   try {
     const cookieStore = await cookies();
-    const session = cookieStore.get('canvas-session');
-    const isAuth = session?.value === 'authenticated';
+    const token = cookieStore.get(SESSION_COOKIE)?.value;
+    const user = token ? verifySessionToken(token) : null;
 
-    return NextResponse.json(
-      { authenticated: isAuth },
-      { status: 200 }
-    );
+    if (!user) {
+      return NextResponse.json({ authenticated: false }, { status: 200 });
+    }
+
+    return NextResponse.json({ authenticated: true, user }, { status: 200 });
   } catch (error) {
     console.error('Check auth error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ authenticated: false }, { status: 200 });
   }
 }

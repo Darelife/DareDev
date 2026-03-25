@@ -1,62 +1,139 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { SessionUser, verifySessionToken } from '@/lib/auth';
+import { getServiceSupabaseClient } from '@/lib/db';
+import { checkRateLimit, getClientIp } from '@/lib/ratelimit';
 
-function getSupabaseClient() {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const SESSION_COOKIE = 'canvas-session';
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+async function getSessionUser(): Promise<SessionUser | null> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  if (!token) {
     return null;
   }
-
-  return createClient(supabaseUrl, supabaseAnonKey);
+  return verifySessionToken(token);
 }
 
-async function isAuthenticated(request: NextRequest) {
-  const cookieStore = await cookies();
-  const session = cookieStore.get('canvas-session');
-  return session?.value === 'authenticated';
+async function hasDrawingAccess(user: SessionUser, drawingId: string): Promise<boolean> {
+  if (user.role === 'admin') {
+    return true;
+  }
+
+  const supabase = getServiceSupabaseClient();
+  const { data: drawing, error: drawingError } = await supabase
+    .from('drawings')
+    .select('id, created_by')
+    .eq('id', drawingId)
+    .maybeSingle();
+
+  if (drawingError) {
+    throw drawingError;
+  }
+
+  if (!drawing) {
+    return false;
+  }
+
+  if (drawing.created_by === user.id) {
+    return true;
+  }
+
+  const { data: access, error: accessError } = await supabase
+    .from('drawing_access')
+    .select('id')
+    .eq('drawing_id', drawingId)
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (accessError) {
+    throw accessError;
+  }
+
+  return !!access;
 }
 
 export async function GET(request: NextRequest) {
   try {
-    if (!(await isAuthenticated(request))) {
+    const ip = getClientIp(request.headers);
+    const rate = checkRateLimit(`canvas:get:${ip}`, 60, 60_000);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        {
+          status: 429,
+          headers: rate.retryAfterSeconds
+            ? { 'Retry-After': String(rate.retryAfterSeconds) }
+            : undefined,
+        }
+      );
+    }
+
+    const user = await getSessionUser();
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    const supabase = getSupabaseClient();
-    if (!supabase) {
-      return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
-      );
+    const supabase = getServiceSupabaseClient();
+    const drawingId = request.nextUrl.searchParams.get('id')?.trim();
+
+    if (!drawingId) {
+      if (user.role === 'admin') {
+        const { data, error } = await supabase
+          .from('drawings')
+          .select('id, title, created_by, created_at, updated_at')
+          .order('updated_at', { ascending: false });
+
+        if (error) {
+          throw error;
+        }
+
+        return NextResponse.json({ success: true, drawings: data ?? [] }, { status: 200 });
+      }
+
+      const { data, error } = await supabase
+        .from('drawing_access')
+        .select('drawing_id, drawings(id, title, created_by, created_at, updated_at)')
+        .eq('user_id', user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      const drawings =
+        data
+          ?.map((entry) => entry.drawings)
+          .filter((drawing): drawing is NonNullable<typeof drawing> => !!drawing) ?? [];
+
+      return NextResponse.json({ success: true, drawings }, { status: 200 });
+    }
+
+    const canAccess = await hasDrawingAccess(user, drawingId);
+    if (!canAccess) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const { data, error } = await supabase
       .from('drawings')
-      .select('data, updated_at')
-      .eq('id', 'default-canvas')
+      .select('id, title, data, created_by, created_at, updated_at')
+      .eq('id', drawingId)
       .maybeSingle();
 
-    if (error && error.code !== 'PGRST116') {
-      console.error('Supabase error:', error);
-      return NextResponse.json(
-        { error: 'Failed to load drawing' },
-        { status: 500 }
-      );
+    if (error) {
+      throw error;
+    }
+
+    if (!data) {
+      return NextResponse.json({ error: 'Drawing not found' }, { status: 404 });
     }
 
     return NextResponse.json(
       {
         success: true,
-        drawing: data || {
-          elements: [],
-          appState: { collaborators: new Map() },
-        },
+        drawing: data,
       },
       { status: 200 }
     );
@@ -71,50 +148,80 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    if (!(await isAuthenticated(request))) {
+    const ip = getClientIp(request.headers);
+    const rate = checkRateLimit(`canvas:post:${ip}`, 40, 60_000);
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: 'Too many requests' },
+        {
+          status: 429,
+          headers: rate.retryAfterSeconds
+            ? { 'Retry-After': String(rate.retryAfterSeconds) }
+            : undefined,
+        }
+      );
+    }
+
+    const user = await getSessionUser();
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    const supabase = getSupabaseClient();
-    if (!supabase) {
+    const saveRate = checkRateLimit(`canvas:save:user:${user.id}`, 1, 10_000);
+    if (!saveRate.allowed) {
       return NextResponse.json(
-        { error: 'Server configuration error' },
-        { status: 500 }
+        { error: 'Please wait 10 seconds before saving again' },
+        {
+          status: 429,
+          headers: saveRate.retryAfterSeconds
+            ? { 'Retry-After': String(saveRate.retryAfterSeconds) }
+            : undefined,
+        }
       );
     }
 
-    const { elements, appState, files } = await request.json();
+    const supabase = getServiceSupabaseClient();
+    const body = await request.json();
+    const drawingId = typeof body?.drawingId === 'string' ? body.drawingId.trim() : '';
 
-    const istTime = new Date(
-      new Date().getTime() + 5.5 * 60 * 60 * 1000
-    ).toISOString();
+    if (!drawingId) {
+      return NextResponse.json({ error: 'drawingId is required' }, { status: 400 });
+    }
 
-    const scene = { elements, appState, files };
+    const canAccess = await hasDrawingAccess(user, drawingId);
+    if (!canAccess) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
-    const { error } = await supabase
+    const elements = Array.isArray(body?.elements) ? body.elements : [];
+    const appState = body?.appState && typeof body.appState === 'object' ? body.appState : {};
+    const files = body?.files && typeof body.files === 'object' ? body.files : {};
+
+    const payload = {
+      data: { elements, appState, files },
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
       .from('drawings')
-      .upsert(
-        {
-          id: 'default-canvas',
-          data: scene,
-          updated_at: istTime,
-        },
-        { onConflict: 'id' }
-      );
+      .update(payload)
+      .eq('id', drawingId)
+      .select('id')
+      .maybeSingle();
 
     if (error) {
-      console.error('Save error:', error);
-      return NextResponse.json(
-        { error: 'Failed to save drawing' },
-        { status: 500 }
-      );
+      throw error;
+    }
+
+    if (!data) {
+      return NextResponse.json({ error: 'Drawing not found' }, { status: 404 });
     }
 
     return NextResponse.json(
-      { success: true, message: 'Drawing saved', savedAt: istTime },
+      { success: true, message: 'Drawing saved', drawingId },
       { status: 200 }
     );
   } catch (error) {

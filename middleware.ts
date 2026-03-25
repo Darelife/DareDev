@@ -3,11 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only protect /api/canvas routes
+  // Fast pre-check: canvas endpoints require a session cookie.
+  // Token validity and role checks happen inside route handlers.
   if (pathname.startsWith('/api/canvas')) {
     const session = request.cookies.get('canvas-session');
-    
-    if (!session || session.value !== 'authenticated') {
+
+    if (!session?.value) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
