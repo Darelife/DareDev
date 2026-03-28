@@ -59,7 +59,7 @@ function ProjectsHeading() {
         <span
           className="font-black leading-none whitespace-nowrap"
           style={{
-            fontSize: 'clamp(6rem, 22vw, 18rem)',
+            fontSize: 'clamp(3.5rem, 18vw, 18rem)',
             fontFamily: 'var(--font-inter), Inter, sans-serif',
             letterSpacing: '-0.04em',
             color: '#fff',
@@ -96,7 +96,7 @@ function ProjectsHeading() {
             key={i}
             className="inline-block font-black leading-none select-none"
             style={{
-              fontSize: 'clamp(3.5rem, 10vw, 7rem)',
+              fontSize: 'clamp(2.2rem, 10vw, 7rem)',
               fontFamily: 'var(--font-inter), Inter, sans-serif',
               color: visible ? '#fff' : 'transparent',
               textShadow: visible ? '0 0 40px rgba(220,38,38,0.25)' : 'none',
