@@ -92,6 +92,7 @@ function ProjectsHeading() {
       {/* Big letter-by-letter title */}
       <div className="flex items-end gap-0.5 sm:gap-1 pb-2" aria-label="Projects">
         {letters.map((letter, i) => (
+
           <span
             key={i}
             className="inline-block font-black leading-none select-none"
