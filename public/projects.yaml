@@ -1,20 +1,11 @@
 projects:
   - title: "CodeforcesHelper | CF Extension"
-    desc: "Have 900+ users using the extension on the Chrome Webstore and Firefox Addons Store"
+    desc: "Have 2000+ users using the extension on the Chrome Webstore and Firefox Addons Store"
     links:
       - "https://chromewebstore.google.com/detail/codeforces-helper/ahoeafmlmoohkkalcickdnkifpfnolpj"
       - "https://addons.mozilla.org/en-US/firefox/addon/codeforces-helper/"
     techstack:
       - "JavaScript"
-
-  - title: "XPIA Attack Demonstration | AI Agents"
-    desc: "Made a demo agent model using Crew AI, in which the agent was instructed to visit a website, and follow its instructions. And unbeknownst to it, it would make it mess up with the postgres database hosted via supabase"
-    links:
-      - "https://github.com/Darelife/xpia"
-    techstack:
-      - "Python"
-      - "Crew AI"
-      - "Gemini"
 
   - title: "Multi-Variable Equation Solver"
     desc: "Built a command-line tool in C++ that solves linear systems using Gauss-Jordan elimination and Cramer's Rule. It handles all edge cases: unique solutions, infinite solutions, or no solution at all."
@@ -23,8 +14,18 @@ projects:
     techstack:
       - "C++"
 
+  - title: "XPIA Attack Demonstration | AI Agents"
+    desc: "Made a demo agent model using Crew AI, in which the agent was instructed to visit a website, and follow its instructions. And unbeknownst to it, it would make it mess up with the postgres database hosted via supabase"
+    links:
+      - "https://github.com/Darelife/xpia"
+    techstack:
+      - "Python"
+      - "Crew AI"
+
   - title: "PacMan | Network Packet Analyzer"
     desc: "Built a real-time PCAPNG network analyzer for a 24-hour hackathon, placing 2nd out of 200+ teams. It captures packets using Scapy and Pyshark, filters and analyzes them, and streams insights like latency, jitter, and packet loss to an interactive Next.js dashboard."
+    links:
+      - "https://github.com/Darelife/PacMan-hackenza2.0"
     techstack:
       - "Next.js"
       - "Flask"
@@ -64,3 +65,20 @@ projects:
     techstack:
       - "Python"
       - "Discord.py"
+
+  - title: "Campus Map"
+    desc: "Captured 360 images on phone, and developed a proper website to have a Google street view replica of it, for BITS Pilani, Goa Campus, with indoor and multi floor capabilities."
+    links:
+      - "https://cm.darelife.xyz"
+      - "https://bpgcmap.vercel.app/"
+      - "https://github.com/Darelife/campusMap"
+    techstack:
+      - "Next.js"
+
+  - title: "ML-Guided Tiered Storage Simulator & Cache Optimizer"
+    desc: "Built a PyTorch middleware and 3-tier storage simulator to tackle the GPU 'I/O Wall' during ResNet-18 training. I benchmarked custom learning-based cache eviction policies against a standard LRU baseline. Interestingly, while the XGBoost and Contextual Bandit models drastically reduced I/O latency, the pure loss-driven existing approach (The SHADE paper) actually outperformed the more complex AI ensembles. Made for the DSTN course."
+    techstack:
+      - "Python"
+      - "PyTorch"
+      - "XGBoost"
+      - "Systems Architecture"
