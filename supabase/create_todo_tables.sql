@@ -18,7 +18,7 @@ CREATE TABLE todo_deadlines (
 );
 
 -- Ensure RLS is enabled to prevent unauthorized access
--- Since we are doing all data access server-side with the service_role key, 
+-- Since we are doing all data access server-side with the service_role key,
 -- we will just enable RLS with no policies to completely lock down the client-side access.
 ALTER TABLE todo_tasks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE todo_deadlines ENABLE ROW LEVEL SECURITY;
