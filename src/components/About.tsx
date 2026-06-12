@@ -201,6 +201,7 @@ export default function About() {
                 className="leading-[1.9] text-white/50"
                 style={{ ...inter, fontSize: 'clamp(0.875rem, 1.2vw, 0.975rem)' }}
               >
+                {/* TODO: Need to add an api call to get the peak rating (also, take care of the case when the api is down...eg: during contests */}
                 Started in 2020 when the pandemic hit. Boredom turned into a Discord bot,
                 which turned into a full-blown obsession. Went from Python to C, C++, JavaScript,
                 React, and GoLang. Competed on Codeforces, peaked at{' '}
