@@ -214,7 +214,7 @@ export default function About() {
               >
                 Grew up in Kuwait, schooled across Mumbai &amp; Jaipur, now at{' '}
                 <span className="text-white/50">BITS Pilani, Goa</span> doing CSE,
-                still hungry for the next hard problem.
+                still hungry for the next hard problem. Currently Interning at Google (Datastream, GCP)
               </p>
             </div>
 
