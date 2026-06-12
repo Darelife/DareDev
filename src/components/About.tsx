@@ -204,7 +204,7 @@ export default function About() {
                 Started in 2020 when the pandemic hit. Boredom turned into a Discord bot,
                 which turned into a full-blown obsession. Went from Python to C, C++, JavaScript,
                 React, and GoLang. Competed on Codeforces, peaked at{' '}
-                <span className="text-white/78 font-medium">1635</span>, shipped a browser extension
+                <span className="text-white/78 font-medium">1643</span>, shipped a browser extension
                 to <span className="text-white/78 font-medium">1000+ users</span>, and
                 built academic platforms with thousands of monthly visitors.
               </p>
