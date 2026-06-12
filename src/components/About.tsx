@@ -206,7 +206,7 @@ export default function About() {
                 which turned into a full-blown obsession. Went from Python to C, C++, JavaScript,
                 React, and GoLang. Competed on Codeforces, peaked at{' '}
                 <span className="text-white/78 font-medium">1643</span>, shipped a browser extension
-                to <span className="text-white/78 font-medium">1000+ users</span>, and
+                to <span className="text-white/78 font-medium">2000+ users</span>, and
                 built academic platforms with thousands of monthly visitors.
               </p>
               <p
@@ -215,7 +215,7 @@ export default function About() {
               >
                 Grew up in Kuwait, schooled across Mumbai &amp; Jaipur, now at{' '}
                 <span className="text-white/50">BITS Pilani, Goa</span> doing CSE,
-                still hungry for the next hard problem. Currently Interning at Google (Datastream, GCP)
+                still hungry for the next hard problem. Currently Interning at <span className="text-white/50">Google</span> (Datastream, GCP)
               </p>
             </div>
 
