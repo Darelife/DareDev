@@ -154,6 +154,76 @@ html {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.resources-loading {
+  position: absolute;
+  inset: 0;
+}
+
+.resources-loading-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  height: 3rem;
+  margin-bottom: 2rem;
+  color: rgba(248, 113, 113, 0.7);
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.resources-loading-orbit {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-top-color: rgba(248, 113, 113, 0.95);
+  border-radius: 999px;
+  animation: projects-orbit 1.2s linear infinite;
+}
+
+.resources-loading-orbit span {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 999px;
+  background: #f87171;
+  box-shadow: 0 0 9px 2px rgba(248, 113, 113, 0.8);
+}
+
+.resources-loading-dots {
+  width: 1.2rem;
+  color: rgba(248, 113, 113, 0.9);
+  animation: projects-pulse 1s ease-in-out infinite;
+}
+
+.resources-loading-section {
+  margin-bottom: 3.5rem;
+}
+
+.resources-loading-heading,
+.resources-loading-row {
+  background: linear-gradient(100deg, rgba(255,255,255,0.045) 25%, rgba(248,113,113,0.13) 45%, rgba(255,255,255,0.045) 65%);
+  background-size: 300% 100%;
+  animation: projects-shimmer 2.2s ease-in-out infinite;
+}
+
+.resources-loading-heading {
+  width: 12rem;
+  height: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.resources-loading-row {
+  width: 100%;
+  height: 4.5rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.resources-loading-row-short { width: 82%; }
+.resources-loading-row-medium { width: 92%; }
+
 @media (prefers-reduced-motion: reduce) {
   .projects-loading-orbit,
   .projects-loading-dots,
@@ -163,6 +233,13 @@ html {
   .projects-list-visible .projects-list-row {
     animation: none;
     transition: none;
+  }
+
+  .resources-loading-orbit,
+  .resources-loading-dots,
+  .resources-loading-heading,
+  .resources-loading-row {
+    animation: none;
   }
 }
 

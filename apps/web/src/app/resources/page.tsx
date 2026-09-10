@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Navbar from '../../components/navbar';
 import ResourcesClient from '../../components/ResourcesClient';
 import { getResources } from '../../lib/api-client';
@@ -6,8 +8,43 @@ import { getResources } from '../../lib/api-client';
 const inter = "var(--font-inter), Inter, sans-serif";
 const mono = "'Ubuntu Mono', monospace";
 
-const Resources = async () => {
-  const resourcesData = await getResources();
+function ResourcesLoading() {
+  return (
+    <div className="resources-loading" role="status" aria-label="Loading resources">
+      <div className="resources-loading-status">
+        <span className="resources-loading-orbit" aria-hidden="true"><span /></span>
+        <span>syncing knowledge base</span>
+        <span className="resources-loading-dots" aria-hidden="true">...</span>
+      </div>
+      {[0, 1, 2].map((section) => (
+        <div key={section} className="resources-loading-section" aria-hidden="true">
+          <div className="resources-loading-heading" />
+          <div className="resources-loading-row" />
+          <div className="resources-loading-row resources-loading-row-short" />
+          <div className="resources-loading-row resources-loading-row-medium" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+const Resources = () => {
+  const [resourcesData, setResourcesData] = useState<Record<string, any[]>>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    getResources()
+      .then((data) => {
+        setResourcesData(data);
+        setHasError(Object.keys(data).length === 0);
+      })
+      .catch((error) => {
+        console.error("Failed to load resources:", error);
+        setHasError(true);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <div className="bg-black min-h-screen text-white" style={{ fontFamily: inter }}>
@@ -48,8 +85,14 @@ const Resources = async () => {
       </div>
 
       {/* ── Resource categories ── */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-8 pb-24">
-        <ResourcesClient data={resourcesData} />
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-8 pb-24 min-h-[780px]" aria-busy={isLoading}>
+        {isLoading ? <ResourcesLoading /> : null}
+        {!isLoading && !hasError ? <ResourcesClient data={resourcesData} /> : null}
+        {!isLoading && hasError ? (
+          <div className="py-20 text-center text-white/35" style={{ fontFamily: mono }}>
+            Unable to load resources right now.
+          </div>
+        ) : null}
       </div>
     </div>
   );
