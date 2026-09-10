@@ -153,15 +153,48 @@ function ProjectsHeading() {
   );
 }
 
+function ProjectsLoadingState() {
+  return (
+    <div className="projects-loading" aria-label="Loading projects" role="status">
+      <div className="projects-loading-status">
+        <span className="projects-loading-orbit" aria-hidden="true">
+          <span />
+        </span>
+        <span>retrieving builds</span>
+        <span className="projects-loading-dots" aria-hidden="true">...</span>
+      </div>
+      <div className="flex flex-col divide-y divide-white/5" aria-hidden="true">
+        {[0, 1, 2, 3, 4].map((item) => (
+          <div key={item} className="projects-skeleton-row">
+            <div className="projects-skeleton-index" />
+            <div className="flex-1 space-y-3">
+              <div className="projects-skeleton-line projects-skeleton-title" />
+              <div className="projects-skeleton-line projects-skeleton-copy" />
+              <div className="projects-skeleton-line projects-skeleton-tags" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ─── Main component ─────────────────────────────────────────────────── */
 export default function Projects() {
   const [projects, setProjects] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
     getProjects()
-      .then(setProjects)
-      .catch((e) => console.error('Failed to load projects:', e));
+      .then((loadedProjects) => {
+        setProjects(loadedProjects);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.error('Failed to load projects:', e);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
@@ -175,18 +208,21 @@ export default function Projects() {
         <div className="mt-16 sm:mt-20" />
 
         {/* ── Project List ── */}
-        <div className="flex flex-col divide-y divide-white/5">
+        <div className="relative min-h-[760px]" aria-busy={isLoading}>
+          {isLoading ? <ProjectsLoadingState /> : null}
+          <div className={`flex flex-col divide-y divide-white/5 projects-list ${isLoading ? 'projects-list-hidden' : 'projects-list-visible'}`}>
           {projects.map((project, index) => {
             const isHovered = hoveredIndex === index;
             return (
               <div
-                key={index}
-                className="group relative py-7 sm:py-8 pl-5 sm:pl-8 pr-3 sm:pr-6 transition-all duration-300 cursor-default"
+                key={project.id ?? index}
+                className="group relative py-7 sm:py-8 pl-5 sm:pl-8 pr-3 sm:pr-6 transition-all duration-300 cursor-default projects-list-row"
                 style={{
+                  '--row-delay': `${Math.min(index, 8) * 75}ms`,
                   background: isHovered
                     ? 'linear-gradient(90deg, rgba(220,38,38,0.06) 0%, transparent 80%)'
                     : 'transparent',
-                }}
+                } as React.CSSProperties}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
@@ -299,6 +335,7 @@ export default function Projects() {
               </div>
             );
           })}
+          </div>
         </div>
       </div>
     </div>
