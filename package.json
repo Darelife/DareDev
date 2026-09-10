@@ -2,41 +2,23 @@
   "name": "daredev",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/api",
+    "packages/shared"
+  ],
   "scripts": {
-    "dev": "NODE_OPTIONS='' next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@excalidraw/excalidraw": "^0.18.0",
-    "@supabase/supabase-js": "^2.75.1",
-    "@tailwindcss/line-clamp": "^0.4.4",
-    "@tailwindcss/typography": "^0.5.16",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/react-syntax-highlighter": "^15.5.13",
-    "bcryptjs": "^3.0.2",
-    "framer-motion": "^12.23.0",
-    "geist": "^1.5.1",
-    "gray-matter": "^4.0.3",
-    "gsap": "^3.13.0",
-    "js-yaml": "^4.1.0",
-    "jsonwebtoken": "^9.0.3",
-    "next": "^16.2.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-markdown": "^10.1.0",
-    "react-syntax-highlighter": "^15.6.1",
-    "rehype-raw": "^7.0.0",
-    "remark-gfm": "^4.0.1"
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev": "concurrently -n web,api -c blue,green \"npm:dev:web\" \"npm:dev:api\"",
+    "build:web": "npm run build --workspace=apps/web",
+    "build:api": "npm run build --workspace=apps/api",
+    "build": "npm run build:web && npm run build:api",
+    "lint": "npm run lint --workspace=apps/web && npm run lint --workspace=apps/api",
+    "seed-admin": "npm run seed-admin --workspace=apps/api",
+    "seed-content": "tsx scripts/seed-content.ts"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/js-yaml": "^4.0.9",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "concurrently": "^9.1.0"
   }
 }

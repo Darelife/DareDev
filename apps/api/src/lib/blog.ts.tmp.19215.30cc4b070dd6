@@ -1,0 +1,21 @@
+export function toBlogMeta(row: any) {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    description: row.description,
+    date: row.date,
+    author: row.author,
+    tags: row.tags,
+    readTime: row.read_time,
+    featured: row.featured,
+    published: row.published,
+    orderIndex: row.order_index,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+export function blogDocPath(slug: string): string {
+  return `blogPosts/${slug}`;
+}
