@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import "./themes.css";
+import ThemeProvider from "@/components/themes/ThemeProvider";
+import { themeBootstrap } from "@/components/themes/registry";
 
 // Guard against Node runtimes started with an invalid --localstorage-file flag.
 if (
@@ -73,8 +76,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="original" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ef4444" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -85,7 +89,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <script defer src="https://cloud.umami.is/script.js" data-website-id="f7a897c7-6d92-4b1d-a750-84ef78402202"></script>
         <script defer src="/unregister-sw.js" />
       </body>

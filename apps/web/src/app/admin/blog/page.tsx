@@ -28,13 +28,13 @@ export default function AdminBlogListPage() {
         <h1 style={{ fontSize: "1.5rem" }}>Blog</h1>
         <Link
           href="/admin/blog/new"
-          style={{ padding: "8px 16px", background: "#e11d48", color: "#fff", textDecoration: "none" }}
+          style={{ padding: "8px 16px", background: "var(--appearance-highlight, #e11d48)", color: "var(--appearance-ink, #fff)", textDecoration: "none" }}
         >
           + New post
         </Link>
       </div>
 
-      {error && <div style={{ color: "#ff6b6b", marginBottom: "16px" }}>{error}</div>}
+      {error && <div style={{ color: "var(--appearance-danger, #ff6b6b)", marginBottom: "16px" }}>{error}</div>}
 
       {loading ? (
         <div>Loading…</div>
@@ -44,7 +44,7 @@ export default function AdminBlogListPage() {
             <div
               key={p.id}
               style={{
-                border: "1px solid #222",
+                border: "1px solid var(--appearance-rule, #222)",
                 padding: "16px",
                 borderRadius: "6px",
                 display: "flex",
@@ -54,7 +54,7 @@ export default function AdminBlogListPage() {
             >
               <div>
                 <div style={{ fontWeight: 600 }}>{p.title}</div>
-                <div style={{ fontSize: "11px", color: "#666", marginTop: "4px" }}>
+                <div style={{ fontSize: "11px", color: "var(--appearance-muted, #666)", marginTop: "4px" }}>
                   /{p.slug} {p.date ? `· ${p.date}` : ""} · {p.published ? "published" : "draft"}
                   {p.featured ? " · featured" : ""}
                 </div>
@@ -62,7 +62,7 @@ export default function AdminBlogListPage() {
               <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
                 <Link
                   href={`/admin/blog/${p.id}`}
-                  style={{ padding: "4px 10px", color: "#e3e3e3", border: "1px solid #333", textDecoration: "none" }}
+                  style={{ padding: "4px 10px", color: "var(--appearance-ink, #e3e3e3)", border: "1px solid var(--appearance-rule, #333)", textDecoration: "none" }}
                 >
                   Edit
                 </Link>
@@ -72,14 +72,14 @@ export default function AdminBlogListPage() {
                     await adminDeleteBlogPost(p.id);
                     refresh();
                   }}
-                  style={{ padding: "4px 10px", background: "transparent", color: "#ff6b6b", border: "1px solid #3a1a1a", cursor: "pointer" }}
+                  style={{ padding: "4px 10px", background: "transparent", color: "var(--appearance-danger, #ff6b6b)", border: "1px solid var(--appearance-rule, #3a1a1a)", cursor: "pointer" }}
                 >
                   Delete
                 </button>
               </div>
             </div>
           ))}
-          {posts.length === 0 && <div style={{ color: "#666" }}>No posts yet.</div>}
+          {posts.length === 0 && <div style={{ color: "var(--appearance-muted, #666)" }}>No posts yet.</div>}
         </div>
       )}
     </div>

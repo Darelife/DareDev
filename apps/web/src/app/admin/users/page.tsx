@@ -6,9 +6,9 @@ import { listUsers, createUser } from "@/lib/api-client";
 type UserRow = { id: string; username: string; created_at: string };
 
 const fieldStyle: React.CSSProperties = {
-  backgroundColor: "#0a0a0a",
-  color: "#e3e3e3",
-  border: "1px solid #333",
+  backgroundColor: "var(--appearance-surface, #0a0a0a)",
+  color: "var(--appearance-ink, #e3e3e3)",
+  border: "1px solid var(--appearance-rule, #333)",
   padding: "8px",
   fontFamily: "inherit",
   fontSize: "13px",
@@ -60,11 +60,11 @@ export default function AdminUsersPage() {
         style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "24px", alignItems: "flex-end" }}
       >
         <div style={{ flex: "1", minWidth: "160px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Username</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Username</label>
           <input style={fieldStyle} value={username} onChange={(e) => setUsername(e.target.value)} required />
         </div>
         <div style={{ flex: "1", minWidth: "160px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Password</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Password</label>
           <input
             type="password"
             style={fieldStyle}
@@ -77,13 +77,13 @@ export default function AdminUsersPage() {
         <button
           type="submit"
           disabled={saving}
-          style={{ padding: "8px 16px", background: "#e11d48", color: "#fff", border: "none", cursor: "pointer" }}
+          style={{ padding: "8px 16px", background: "var(--appearance-highlight, #e11d48)", color: "var(--appearance-ink, #fff)", border: "none", cursor: "pointer" }}
         >
           {saving ? "Creating…" : "Add owner"}
         </button>
       </form>
 
-      {error && <div style={{ color: "#ff6b6b", marginBottom: "16px" }}>{error}</div>}
+      {error && <div style={{ color: "var(--appearance-danger, #ff6b6b)", marginBottom: "16px" }}>{error}</div>}
 
       {loading ? (
         <div>Loading…</div>
@@ -92,10 +92,10 @@ export default function AdminUsersPage() {
           {users.map((u) => (
             <div
               key={u.id}
-              style={{ border: "1px solid #222", padding: "10px", borderRadius: "4px", fontSize: "13px" }}
+              style={{ border: "1px solid var(--appearance-rule, #222)", padding: "10px", borderRadius: "4px", fontSize: "13px" }}
             >
-              <span style={{ color: "#e3e3e3" }}>{u.username}</span>{" "}
-              <span style={{ color: "#666" }}>· since {new Date(u.created_at).toLocaleDateString()}</span>
+              <span style={{ color: "var(--appearance-ink, #e3e3e3)" }}>{u.username}</span>{" "}
+              <span style={{ color: "var(--appearance-muted, #666)" }}>· since {new Date(u.created_at).toLocaleDateString()}</span>
             </div>
           ))}
         </div>

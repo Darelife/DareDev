@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import "@excalidraw/excalidraw/index.css";
+import { useTheme } from "@/components/themes/ThemeProvider";
 import { loadCanvas, saveCanvas } from "@/lib/api-client";
 
 const Excalidraw = dynamic(
@@ -11,6 +12,7 @@ const Excalidraw = dynamic(
 );
 
 export default function AdminCanvasPage() {
+  const { theme } = useTheme();
   const [initialData, setInitialData] = useState<any>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSavedAt, setLastSavedAt] = useState<string>("");
@@ -98,8 +100,8 @@ export default function AdminCanvasPage() {
       <div
         style={{
           padding: "10px",
-          backgroundColor: "#1a1a1a",
-          color: "#00ff00",
+          backgroundColor: "var(--appearance-surface, #1a1a1a)",
+          color: "var(--appearance-success, #00ff00)",
           fontFamily: "monospace",
           display: "flex",
           alignItems: "center",
@@ -112,8 +114,8 @@ export default function AdminCanvasPage() {
           disabled={isSaving || cooldownSeconds > 0}
           style={{
             padding: "5px 10px",
-            backgroundColor: "#0088ff",
-            color: "#fff",
+            backgroundColor: "var(--appearance-highlight, #0088ff)",
+            color: "var(--appearance-ink, #fff)",
             border: "none",
             fontFamily: "monospace",
             cursor: "pointer",
@@ -123,13 +125,13 @@ export default function AdminCanvasPage() {
           {isSaving ? "Saving..." : cooldownSeconds > 0 ? `Save (${cooldownSeconds}s)` : "Save"}
         </button>
         {lastSavedAt && <span style={{ fontSize: "12px" }}>Saved at {lastSavedAt}</span>}
-        {error && <span style={{ color: "#ff0000" }}>{error}</span>}
+        {error && <span style={{ color: "var(--appearance-danger, #ff0000)" }}>{error}</span>}
       </div>
       <div style={{ flex: 1 }}>
         {initialData ? (
-          <Excalidraw initialData={initialData} onChange={handleChange} validateEmbeddable={() => true} />
+          <Excalidraw theme={theme === "sketchbook" ? "light" : (initialData.appState?.theme ?? "light")} initialData={initialData} onChange={handleChange} validateEmbeddable={() => true} />
         ) : (
-          <div style={{ padding: "16px", fontFamily: "monospace", color: "#e3e3e3" }}>Loading…</div>
+          <div style={{ padding: "16px", fontFamily: "monospace", color: "var(--appearance-ink, #e3e3e3)" }}>Loading…</div>
         )}
       </div>
     </div>

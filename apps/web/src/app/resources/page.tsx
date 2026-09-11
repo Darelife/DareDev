@@ -47,7 +47,7 @@ const Resources = () => {
   }, []);
 
   return (
-    <div className="bg-black min-h-screen text-white" style={{ fontFamily: inter }}>
+    <div className="bg-[var(--appearance-canvas,#000)] min-h-screen text-[color:var(--appearance-ink,#fff)]" style={{ fontFamily: inter }}>
       <Navbar />
 
       {/* ── Hero ── */}
@@ -58,7 +58,7 @@ const Resources = () => {
           aria-hidden="true"
         >
           <span
-            className="font-black text-white leading-none whitespace-nowrap"
+            className="font-black text-[color:var(--appearance-ink,#fff)] leading-none whitespace-nowrap"
             style={{ fontSize: 'clamp(5rem, 20vw, 16rem)', fontFamily: inter, letterSpacing: '-0.04em', opacity: 0.04 }}
           >
             LEARN
@@ -66,19 +66,19 @@ const Resources = () => {
         </div>
         <div className="relative max-w-3xl mx-auto">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-8 bg-red-500/50" />
-            <span className="text-[10px] tracking-[0.35em] uppercase text-red-500/60" style={{ fontFamily: mono }}>
+            <div className="h-px w-8 bg-[var(--appearance-highlight,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_50%,transparent))]" />
+            <span className="text-[10px] tracking-[0.35em] uppercase text-[color:var(--appearance-accent,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_60%,transparent))]" style={{ fontFamily: mono }}>
               knowledge base
             </span>
-            <div className="h-px w-8 bg-red-500/50" />
+            <div className="h-px w-8 bg-[var(--appearance-highlight,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_50%,transparent))]" />
           </div>
           <h1
-            className="font-black text-white mb-4 leading-tight"
-            style={{ fontFamily: inter, fontSize: 'clamp(2.5rem, 7vw, 5rem)', letterSpacing: '-0.03em', filter: 'drop-shadow(0 4px 16px rgba(220,38,38,0.25))' }}
+            className="font-black text-[color:var(--appearance-ink,#fff)] mb-4 leading-tight"
+            style={{ fontFamily: inter, fontSize: 'clamp(2.5rem, 7vw, 5rem)', letterSpacing: '-0.03em', filter: 'var(--appearance-shadow, drop-shadow(0 4px 16px rgba(220,38,38,0.25)))' }}
           >
             Learning Resources
           </h1>
-          <p className="text-white/35 text-sm tracking-widest uppercase" style={{ fontFamily: mono }}>
+          <p className="text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_35%,transparent))] text-sm tracking-widest uppercase" style={{ fontFamily: mono }}>
             My personal learning pocket
           </p>
         </div>
@@ -89,7 +89,7 @@ const Resources = () => {
         {isLoading ? <ResourcesLoading /> : null}
         {!isLoading && !hasError ? <ResourcesClient data={resourcesData} /> : null}
         {!isLoading && hasError ? (
-          <div className="py-20 text-center text-white/35" style={{ fontFamily: mono }}>
+          <div className="py-20 text-center text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_35%,transparent))]" style={{ fontFamily: mono }}>
             Unable to load resources right now.
           </div>
         ) : null}

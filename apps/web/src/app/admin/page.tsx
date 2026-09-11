@@ -22,14 +22,14 @@ export default function AdminDashboard() {
             style={{
               display: "block",
               padding: "16px",
-              border: "1px solid #222",
+              border: "1px solid var(--appearance-rule, #222)",
               borderRadius: "6px",
               textDecoration: "none",
-              color: "#e3e3e3",
+              color: "var(--appearance-ink, #e3e3e3)",
             }}
           >
             <div style={{ fontWeight: 600, marginBottom: "6px" }}>{s.name}</div>
-            <div style={{ fontSize: "12px", color: "#888" }}>{s.desc}</div>
+            <div style={{ fontSize: "12px", color: "var(--appearance-muted, #888)" }}>{s.desc}</div>
           </Link>
         ))}
       </div>

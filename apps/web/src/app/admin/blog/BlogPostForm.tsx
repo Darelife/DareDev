@@ -50,9 +50,9 @@ export function toBlogInput(form: BlogFormState) {
 }
 
 const fieldStyle: React.CSSProperties = {
-  backgroundColor: "#0a0a0a",
-  color: "#e3e3e3",
-  border: "1px solid #333",
+  backgroundColor: "var(--appearance-surface, #0a0a0a)",
+  color: "var(--appearance-ink, #e3e3e3)",
+  border: "1px solid var(--appearance-rule, #333)",
   padding: "8px",
   fontFamily: "inherit",
   fontSize: "13px",
@@ -88,20 +88,20 @@ export default function BlogPostForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ fontFamily: "'Ubuntu Mono', monospace" }}>
+    <form className="admin-blog-form" onSubmit={handleSubmit} style={{ fontFamily: "'Ubuntu Mono', monospace" }}>
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
         <div style={{ flex: "1", minWidth: "200px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Title</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Title</label>
           <input style={fieldStyle} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
         </div>
         <div style={{ flex: "1", minWidth: "200px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Slug</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Slug</label>
           <input style={fieldStyle} value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} required />
         </div>
       </div>
 
       <div style={{ marginBottom: "10px" }}>
-        <label style={{ fontSize: "11px", color: "#888" }}>Description</label>
+        <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Description</label>
         <textarea
           style={{ ...fieldStyle, minHeight: "50px" }}
           value={form.description}
@@ -111,15 +111,15 @@ export default function BlogPostForm({
 
       <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "10px" }}>
         <div style={{ minWidth: "160px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Date</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Date</label>
           <input type="date" style={fieldStyle} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
         </div>
         <div style={{ minWidth: "160px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Author</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Author</label>
           <input style={fieldStyle} value={form.author} onChange={(e) => setForm({ ...form, author: e.target.value })} />
         </div>
         <div style={{ minWidth: "120px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Read time (min)</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Read time (min)</label>
           <input
             type="number"
             style={fieldStyle}
@@ -128,7 +128,7 @@ export default function BlogPostForm({
           />
         </div>
         <div style={{ flex: "1", minWidth: "200px" }}>
-          <label style={{ fontSize: "11px", color: "#888" }}>Tags (comma-separated)</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Tags (comma-separated)</label>
           <input style={fieldStyle} value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} />
         </div>
       </div>
@@ -144,9 +144,9 @@ export default function BlogPostForm({
         </label>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "14px" }}>
+      <div className="admin-editor-columns" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "14px" }}>
         <div>
-          <label style={{ fontSize: "11px", color: "#888" }}>Body (Markdown, raw HTML allowed)</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Body (Markdown, raw HTML allowed)</label>
           <textarea
             style={{ ...fieldStyle, minHeight: "420px", fontFamily: "monospace" }}
             value={form.body}
@@ -154,10 +154,10 @@ export default function BlogPostForm({
           />
         </div>
         <div>
-          <label style={{ fontSize: "11px", color: "#888" }}>Preview</label>
+          <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Preview</label>
           <div
-            className="prose prose-invert"
-            style={{ border: "1px solid #333", padding: "12px", minHeight: "420px", maxWidth: "none", overflow: "auto" }}
+            className="admin-markdown-preview prose prose-invert"
+            style={{ border: "1px solid var(--appearance-rule, #333)", padding: "12px", minHeight: "420px", maxWidth: "none", overflow: "auto" }}
           >
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
               {form.body || "*nothing yet*"}
@@ -166,13 +166,13 @@ export default function BlogPostForm({
         </div>
       </div>
 
-      {error && <div style={{ color: "#ff6b6b", marginBottom: "10px" }}>{error}</div>}
+      {error && <div style={{ color: "var(--appearance-danger, #ff6b6b)", marginBottom: "10px" }}>{error}</div>}
 
       <div style={{ display: "flex", gap: "8px" }}>
         <button
           type="submit"
           disabled={saving}
-          style={{ padding: "8px 16px", background: "#e11d48", color: "#fff", border: "none", cursor: "pointer" }}
+          style={{ padding: "8px 16px", background: "var(--appearance-highlight, #e11d48)", color: "var(--appearance-ink, #fff)", border: "none", cursor: "pointer" }}
         >
           {saving ? "Saving…" : submitLabel}
         </button>
@@ -180,7 +180,7 @@ export default function BlogPostForm({
           <button
             type="button"
             onClick={onDelete}
-            style={{ padding: "8px 16px", background: "transparent", color: "#ff6b6b", border: "1px solid #3a1a1a", cursor: "pointer" }}
+            style={{ padding: "8px 16px", background: "transparent", color: "var(--appearance-danger, #ff6b6b)", border: "1px solid var(--appearance-rule, #3a1a1a)", cursor: "pointer" }}
           >
             Delete
           </button>

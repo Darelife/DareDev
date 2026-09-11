@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useTheme } from "./themes/ThemeProvider";
 
 const navLinks = [
   { name: "Home", href: "/#home" },
@@ -10,6 +11,7 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { openThemes } = useTheme();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [isMounted, setIsMounted] = React.useState(false);
 
@@ -21,12 +23,12 @@ export default function Navbar() {
     return (
       <nav
         style={{
-          color: "#e3e3e3",
+          color: "var(--appearance-ink, #e3e3e3)",
           padding: "0.75rem 1.5rem",
           position: "sticky",
           top: 0,
           zIndex: 100,
-          backgroundColor: "rgba(0, 0, 0, 0.9)",
+          backgroundColor: "var(--appearance-canvas, rgba(0, 0, 0, 0.9))",
           backdropFilter: "blur(10px)",
         }}
       >
@@ -39,8 +41,9 @@ export default function Navbar() {
             position: "relative",
           }}
         >
-          <div style={{ fontWeight: 500, fontSize: "1.25rem" }}>
-            Darelife
+          <div style={{ fontWeight: 500, fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "16px" }}>
+            <span>Darelife</span>
+            <button type="button" className="nav-theme-switch" onClick={openThemes} aria-haspopup="dialog" aria-keyshortcuts="Alt+T" title="Change theme (Alt+T)">Change theme</button>
           </div>
           <ul 
             style={{ 
@@ -56,7 +59,7 @@ export default function Navbar() {
                 <a
                   href={link.href}
                   style={{
-                    color: "#e3e3e3",
+                    color: "var(--appearance-ink, #e3e3e3)",
                     textDecoration: "none",
                     fontWeight: 500,
                     transition: "color 0.2s",
@@ -77,12 +80,12 @@ export default function Navbar() {
   return (
     <nav
       style={{
-        color: "#e3e3e3",
+        color: "var(--appearance-ink, #e3e3e3)",
         padding: "0.75rem 1.5rem",
         position: "sticky",
         top: 0,
         zIndex: 100,
-        backgroundColor: "rgba(0, 0, 0, 0.9)",
+        backgroundColor: "var(--appearance-canvas, rgba(0, 0, 0, 0.9))",
         backdropFilter: "blur(10px)",
       }}
     >
@@ -95,8 +98,9 @@ export default function Navbar() {
           position: "relative",
         }}
       >
-        <div style={{ fontWeight: 500, fontSize: "1.25rem" }}>
-          Darelife
+        <div style={{ fontWeight: 500, fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "16px" }}>
+          <span>Darelife</span>
+          <button type="button" className="nav-theme-switch" onClick={openThemes} aria-haspopup="dialog" aria-keyshortcuts="Alt+T" title="Change theme (Alt+T)">Change theme</button>
         </div>
         <button
           aria-label="Toggle menu"
@@ -105,7 +109,7 @@ export default function Navbar() {
             display: "none",
             background: "none",
             border: "none",
-            color: "#e3e3e3",
+            color: "var(--appearance-ink, #e3e3e3)",
             fontSize: "1.5rem",
             cursor: "pointer",
             padding: "0.5rem",
@@ -130,7 +134,7 @@ export default function Navbar() {
               <a
                 href={link.href}
                 style={{
-                  color: "#e3e3e3",
+                  color: "var(--appearance-ink, #e3e3e3)",
                   textDecoration: "none",
                   fontWeight: 500,
                   transition: "color 0.2s",
@@ -160,7 +164,7 @@ export default function Navbar() {
             bottom: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.98);
+            background-color: var(--appearance-canvas, rgba(0, 0, 0, 0.98));
             backdrop-filter: blur(20px);
             z-index: 101;
             padding: 0;
@@ -176,7 +180,7 @@ export default function Navbar() {
             transition: all 0.3s ease;
           }
           .navbar-links a:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--appearance-wash, rgba(255, 255, 255, 0.1));
             transform: scale(1.05);
           }
           .navbar-burger {
