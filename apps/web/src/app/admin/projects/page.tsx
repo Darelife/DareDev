@@ -20,9 +20,9 @@ type FormState = {
 const emptyForm: FormState = { title: "", description: "", techStack: "", links: "", orderIndex: "0" };
 
 const fieldStyle: React.CSSProperties = {
-  backgroundColor: "#0a0a0a",
-  color: "#e3e3e3",
-  border: "1px solid #333",
+  backgroundColor: "var(--appearance-surface, #0a0a0a)",
+  color: "var(--appearance-ink, #e3e3e3)",
+  border: "1px solid var(--appearance-rule, #333)",
   padding: "8px",
   fontFamily: "inherit",
   fontSize: "13px",
@@ -98,7 +98,7 @@ function ProjectForm({
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
       <div>
-        <label style={{ fontSize: "11px", color: "#888" }}>Title</label>
+        <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Title</label>
         <input
           style={fieldStyle}
           value={form.title}
@@ -107,7 +107,7 @@ function ProjectForm({
         />
       </div>
       <div>
-        <label style={{ fontSize: "11px", color: "#888" }}>Description</label>
+        <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Description</label>
         <textarea
           style={{ ...fieldStyle, minHeight: "70px" }}
           value={form.description}
@@ -115,7 +115,7 @@ function ProjectForm({
         />
       </div>
       <div>
-        <label style={{ fontSize: "11px", color: "#888" }}>Tech stack (comma-separated)</label>
+        <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Tech stack (comma-separated)</label>
         <input
           style={fieldStyle}
           value={form.techStack}
@@ -124,7 +124,7 @@ function ProjectForm({
         />
       </div>
       <div>
-        <label style={{ fontSize: "11px", color: "#888" }}>Links (one per line: url | label)</label>
+        <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Links (one per line: url | label)</label>
         <textarea
           style={{ ...fieldStyle, minHeight: "60px" }}
           value={form.links}
@@ -133,7 +133,7 @@ function ProjectForm({
         />
       </div>
       <div style={{ maxWidth: "120px" }}>
-        <label style={{ fontSize: "11px", color: "#888" }}>Order</label>
+        <label style={{ fontSize: "11px", color: "var(--appearance-muted, #888)" }}>Order</label>
         <input
           type="number"
           style={fieldStyle}
@@ -141,12 +141,12 @@ function ProjectForm({
           onChange={(e) => setForm({ ...form, orderIndex: e.target.value })}
         />
       </div>
-      {error && <div style={{ color: "#ff6b6b" }}>{error}</div>}
+      {error && <div style={{ color: "var(--appearance-danger, #ff6b6b)" }}>{error}</div>}
       <div style={{ display: "flex", gap: "8px" }}>
         <button
           type="submit"
           disabled={saving}
-          style={{ padding: "8px 16px", background: "#e11d48", color: "#fff", border: "none", cursor: "pointer" }}
+          style={{ padding: "8px 16px", background: "var(--appearance-highlight, #e11d48)", color: "var(--appearance-ink, #fff)", border: "none", cursor: "pointer" }}
         >
           {saving ? "Saving…" : submitLabel}
         </button>
@@ -154,7 +154,7 @@ function ProjectForm({
           <button
             type="button"
             onClick={onCancel}
-            style={{ padding: "8px 16px", background: "transparent", color: "#888", border: "1px solid #333", cursor: "pointer" }}
+            style={{ padding: "8px 16px", background: "transparent", color: "var(--appearance-muted, #888)", border: "1px solid var(--appearance-rule, #333)", cursor: "pointer" }}
           >
             Cancel
           </button>
@@ -190,7 +190,7 @@ export default function AdminProjectsPage() {
         {!creating && (
           <button
             onClick={() => setCreating(true)}
-            style={{ padding: "8px 16px", background: "#e11d48", color: "#fff", border: "none", cursor: "pointer" }}
+            style={{ padding: "8px 16px", background: "var(--appearance-highlight, #e11d48)", color: "var(--appearance-ink, #fff)", border: "none", cursor: "pointer" }}
           >
             + New project
           </button>
@@ -198,7 +198,7 @@ export default function AdminProjectsPage() {
       </div>
 
       {creating && (
-        <div style={{ border: "1px solid #222", padding: "16px", borderRadius: "6px", marginBottom: "20px" }}>
+        <div style={{ border: "1px solid var(--appearance-rule, #222)", padding: "16px", borderRadius: "6px", marginBottom: "20px" }}>
           <ProjectForm
             initial={emptyForm}
             submitLabel="Create"
@@ -212,14 +212,14 @@ export default function AdminProjectsPage() {
         </div>
       )}
 
-      {error && <div style={{ color: "#ff6b6b", marginBottom: "16px" }}>{error}</div>}
+      {error && <div style={{ color: "var(--appearance-danger, #ff6b6b)", marginBottom: "16px" }}>{error}</div>}
 
       {loading ? (
         <div>Loading…</div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {projects.map((p) => (
-            <div key={p.id} style={{ border: "1px solid #222", padding: "16px", borderRadius: "6px" }}>
+            <div key={p.id} style={{ border: "1px solid var(--appearance-rule, #222)", padding: "16px", borderRadius: "6px" }}>
               {editingId === p.id ? (
                 <ProjectForm
                   initial={formFromProject(p)}
@@ -236,14 +236,14 @@ export default function AdminProjectsPage() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div>
                       <div style={{ fontWeight: 600 }}>{p.title}</div>
-                      <div style={{ fontSize: "12px", color: "#888", marginTop: "4px", maxWidth: "60ch" }}>
+                      <div style={{ fontSize: "12px", color: "var(--appearance-muted, #888)", marginTop: "4px", maxWidth: "60ch" }}>
                         {p.description}
                       </div>
                     </div>
                     <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
                       <button
                         onClick={() => setEditingId(p.id)}
-                        style={{ padding: "4px 10px", background: "transparent", color: "#e3e3e3", border: "1px solid #333", cursor: "pointer" }}
+                        style={{ padding: "4px 10px", background: "transparent", color: "var(--appearance-ink, #e3e3e3)", border: "1px solid var(--appearance-rule, #333)", cursor: "pointer" }}
                       >
                         Edit
                       </button>
@@ -253,20 +253,20 @@ export default function AdminProjectsPage() {
                           await adminDeleteProject(p.id);
                           refresh();
                         }}
-                        style={{ padding: "4px 10px", background: "transparent", color: "#ff6b6b", border: "1px solid #3a1a1a", cursor: "pointer" }}
+                        style={{ padding: "4px 10px", background: "transparent", color: "var(--appearance-danger, #ff6b6b)", border: "1px solid var(--appearance-rule, #3a1a1a)", cursor: "pointer" }}
                       >
                         Delete
                       </button>
                     </div>
                   </div>
                   {p.techStack.length > 0 && (
-                    <div style={{ marginTop: "8px", fontSize: "11px", color: "#666" }}>{p.techStack.join(" · ")}</div>
+                    <div style={{ marginTop: "8px", fontSize: "11px", color: "var(--appearance-muted, #666)" }}>{p.techStack.join(" · ")}</div>
                   )}
                 </div>
               )}
             </div>
           ))}
-          {projects.length === 0 && <div style={{ color: "#666" }}>No projects yet.</div>}
+          {projects.length === 0 && <div style={{ color: "var(--appearance-muted, #666)" }}>No projects yet.</div>}
         </div>
       )}
     </div>

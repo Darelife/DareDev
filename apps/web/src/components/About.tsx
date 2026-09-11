@@ -29,13 +29,13 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative bg-black text-white overflow-hidden py-20 sm:py-28"
+      className="relative bg-[var(--appearance-canvas,#000)] text-[color:var(--appearance-ink,#fff)] overflow-hidden py-20 sm:py-28"
     >
       {/* ── Ambient bottom glow ── */}
       <div
         className="pointer-events-none absolute bottom-0 left-0 right-0 h-96"
         style={{
-          background: 'radial-gradient(ellipse 70% 60% at 50% 100%, rgba(220,38,38,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 70% 60% at 50% 100%, var(--appearance-wash, rgba(220,38,38,0.07)) 0%, transparent 70%)',
         }}
       />
 
@@ -45,7 +45,7 @@ export default function About() {
         aria-hidden="true"
       >
         <motion.span
-          className="font-black text-white leading-none whitespace-nowrap"
+          className="font-black text-[color:var(--appearance-ink,#fff)] leading-none whitespace-nowrap"
           style={{ fontSize: 'clamp(6rem, 22vw, 18rem)', ...inter, letterSpacing: '-0.04em' }}
           initial={{ opacity: 0 }}
           animate={sectionVisible ? { opacity: 0.04 } : { opacity: 0 }}
@@ -76,11 +76,11 @@ export default function About() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
             {/* Profile image */}
-            <div className="relative max-w-xs mx-auto lg:mx-0 w-full group">
+            <div className="about-portrait relative max-w-xs mx-auto lg:mx-0 w-full group">
               {/* Offset red shadow */}
               <motion.div
                 className="absolute inset-0 rounded-sm"
-                style={{ background: 'rgba(220,38,38,0.15)' }}
+                style={{ background: 'var(--appearance-wash, rgba(220,38,38,0.15))' }}
                 initial={{ x: 0, y: 0 }}
                 animate={{ x: 10, y: 10 }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
@@ -88,8 +88,8 @@ export default function About() {
 
               {/* Image */}
               <div
-                className="relative aspect-square overflow-hidden rounded-sm border border-red-500/30 transition-shadow duration-500"
-                style={{ boxShadow: '0 0 40px rgba(220,38,38,0.08)' }}
+                className="relative aspect-square overflow-hidden rounded-sm border border-[var(--appearance-rule,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_30%,transparent))] transition-shadow duration-500"
+                style={{ boxShadow: 'var(--appearance-shadow, 0 0 40px rgba(220,38,38,0.08))' }}
               >
                 <img
                   src="/favicon.png"
@@ -99,28 +99,28 @@ export default function About() {
                 {/* Corner vignette */}
                 <div
                   className="absolute inset-0 pointer-events-none"
-                  style={{ background: 'linear-gradient(135deg, transparent 55%, rgba(0,0,0,0.55) 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, transparent 55%, var(--appearance-canvas, rgba(0,0,0,0.55)) 100%)' }}
                 />
                 {/* Red hover tint */}
                 <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ background: 'rgba(220,38,38,0.06)' }}
+                  style={{ background: 'var(--appearance-wash, rgba(220,38,38,0.06))' }}
                 />
               </div>
 
               {/* Caption */}
               <div className="mt-3 flex items-center justify-between px-0.5">
-                <span className="text-[10px] text-white/22 tracking-widest uppercase" style={mono}>
+                <span className="text-[10px] text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_22%,transparent))] tracking-widest uppercase" style={mono}>
                   Prakhar Bhandari
                 </span>
-                <span className="text-[10px] text-red-500/35 tracking-widest" style={mono}>
+                <span className="text-[10px] text-[color:var(--appearance-accent,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_35%,transparent))] tracking-widest" style={mono}>
                   @darelife
                 </span>
               </div>
             </div>
 
             {/* Facts list */}
-            <div className="max-w-xs mx-auto lg:mx-0 w-full divide-y divide-white/6">
+            <div className="max-w-xs mx-auto lg:mx-0 w-full divide-y divide-[var(--appearance-rule,color-mix(in_oklab,#fff_6%,transparent))]">
               {FACTS.map(({ key, val }, i) => (
                 <motion.div
                   key={key}
@@ -130,13 +130,13 @@ export default function About() {
                   transition={{ delay: 0.35 + i * 0.07, duration: 0.45, ease: 'easeOut' }}
                 >
                   <span
-                    className="text-[10px] tracking-widest uppercase text-white/22 group-hover:text-red-500/55 transition-colors duration-300"
+                    className="text-[10px] tracking-widest uppercase text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_22%,transparent))] group-hover:text-[color:var(--appearance-accent,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_55.00000000000001%,transparent))] transition-colors duration-300"
                     style={mono}
                   >
                     {key}
                   </span>
                   <span
-                    className="text-xs text-white/50 group-hover:text-white/80 transition-colors duration-300"
+                    className="text-xs text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_50%,transparent))] group-hover:text-[color:var(--appearance-ink,color-mix(in_oklab,#fff_80%,transparent))] transition-colors duration-300"
                     style={mono}
                   >
                     {val}
@@ -155,8 +155,8 @@ export default function About() {
           >
             {/* Label */}
             <div className="flex items-center gap-3">
-              <div className="h-px w-6 bg-red-500/50" />
-              <span className="text-[10px] tracking-[0.35em] uppercase text-red-500/55" style={mono}>
+              <div className="h-px w-6 bg-[var(--appearance-highlight,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_50%,transparent))]" />
+              <span className="text-[10px] tracking-[0.35em] uppercase text-[color:var(--appearance-accent,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_55.00000000000001%,transparent))]" style={mono}>
                 who i am
               </span>
             </div>
@@ -164,32 +164,32 @@ export default function About() {
             {/* Pull quote */}
             <div>
               <p
-                className="font-bold leading-[1.15] text-white"
+                className="font-bold leading-[1.15] text-[color:var(--appearance-ink,#fff)]"
                 style={{ ...inter, fontSize: 'clamp(1.75rem, 4vw, 2.6rem)', letterSpacing: '-0.02em' }}
               >
                 I write code that{' '}
                 {/* "ships" with animated underline */}
-                <span className="relative inline-block" style={{ color: 'rgba(220,38,38,0.85)' }}>
+                <span className="relative inline-block" style={{ color: 'var(--appearance-accent, rgba(220,38,38,0.85))' }}>
                   ships
                   <motion.span
                     className="absolute bottom-0 left-0 h-[2px] rounded-full"
-                    style={{ background: 'rgba(220,38,38,0.6)', boxShadow: '0 0 6px rgba(220,38,38,0.5)' }}
+                    style={{ background: 'var(--appearance-highlight, rgba(220,38,38,0.6))', boxShadow: 'var(--appearance-shadow, 0 0 6px rgba(220,38,38,0.5))' }}
                     initial={{ width: '0%' }}
                     animate={sectionVisible ? { width: '100%' } : {}}
                     transition={{ duration: 0.7, ease: 'easeOut', delay: 0.8 }}
                   />
                 </span>
-                <span className="text-white/30">,</span>
+                <span className="text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_30%,transparent))]">,</span>
                 <br />
                 compete for fun,
                 <br />
                 and never stop{' '}
-                <span className="text-white/35">building.</span>
+                <span className="text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_35%,transparent))]">building.</span>
               </p>
 
               {/* Blinking cursor after the pull quote */}
               <motion.span
-                className="inline-block w-0.5 h-7 bg-red-500/60 ml-1 align-middle"
+                className="inline-block w-0.5 h-7 bg-[var(--appearance-highlight,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_60%,transparent))] ml-1 align-middle"
                 animate={{ opacity: [1, 0, 1] }}
                 transition={{ duration: 1.1, repeat: Infinity, ease: 'linear', times: [0, 0.499, 0.5, 1] }}
               />
@@ -198,40 +198,40 @@ export default function About() {
             {/* Body text */}
             <div className="flex flex-col gap-4">
               <p
-                className="leading-[1.9] text-white/50"
+                className="leading-[1.9] text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_50%,transparent))]"
                 style={{ ...inter, fontSize: 'clamp(0.875rem, 1.2vw, 0.975rem)' }}
               >
                 {/* TODO: Need to add an api call to get the peak rating (also, take care of the case when the api is down...eg: during contests */}
                 Started in 2020 when the pandemic hit. Boredom turned into a Discord bot,
                 which turned into a full-blown obsession. Went from Python to C, C++, JavaScript,
                 React, and GoLang. Competed on Codeforces, peaked at{' '}
-                <span className="text-white/78 font-medium">1643</span>, shipped a browser extension
-                to <span className="text-white/78 font-medium">2000+ users</span>, and
+                <span className="text-[color:var(--appearance-ink,color-mix(in_oklab,#fff_78%,transparent))] font-medium">1643</span>, shipped a browser extension
+                to <span className="text-[color:var(--appearance-ink,color-mix(in_oklab,#fff_78%,transparent))] font-medium">2000+ users</span>, and
                 built academic platforms with thousands of monthly visitors.
               </p>
               <p
-                className="leading-[1.9] text-white/50"
+                className="leading-[1.9] text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_50%,transparent))]"
                 style={{ ...inter, fontSize: 'clamp(0.875rem, 1.2vw, 0.975rem)' }}
               >
                 Grew up in Kuwait, schooled across Mumbai &amp; Jaipur, now at{' '}
-                <span className="text-white/50">BITS Pilani, Goa</span> doing CSE,
-                still hungry for the next hard problem. Interned at <span className="text-white/50">Google</span> during the summer of 2026 (Datastream, GCP)
+                <span className="text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_50%,transparent))]">BITS Pilani, Goa</span> doing CSE,
+                still hungry for the next hard problem. Interned at <span className="text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_50%,transparent))]">Google</span> during the summer of 2026 (Datastream, GCP)
               </p>
             </div>
 
             {/* Divider */}
-            <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%)' }} />
+            <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, var(--appearance-wash, rgba(255,255,255,0.05)) 0%, transparent 100%)' }} />
 
             {/* Interests */}
             <div className="flex flex-col gap-3">
-              <span className="text-[10px] tracking-[0.35em] uppercase text-white/18" style={mono}>
+              <span className="text-[10px] tracking-[0.35em] uppercase text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_18%,transparent))]" style={mono}>
                 interests
               </span>
               <div className="flex flex-wrap gap-x-6 gap-y-2">
                 {['Competitive Programming', 'Guitar', 'Cubing', 'Programming'].map((tag, i) => (
                   <motion.span
                     key={tag}
-                    className="text-sm text-white/30 hover:text-red-400/65 transition-colors duration-300 cursor-default"
+                    className="text-sm text-[color:var(--appearance-muted,color-mix(in_oklab,#fff_30%,transparent))] hover:text-[color:var(--appearance-accent,color-mix(in_oklab,oklch(70.4%_0.191_22.216)_65%,transparent))] transition-colors duration-300 cursor-default"
                     style={inter}
                     initial={{ opacity: 0 }}
                     animate={sectionVisible ? { opacity: 1 } : {}}

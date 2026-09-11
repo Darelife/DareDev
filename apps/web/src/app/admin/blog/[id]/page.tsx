@@ -31,7 +31,7 @@ export default function EditBlogPostPage() {
   }, [params.id]);
 
   if (error) {
-    return <div style={{ color: "#ff6b6b", fontFamily: "'Ubuntu Mono', monospace" }}>{error}</div>;
+    return <div style={{ color: "var(--appearance-danger, #ff6b6b)", fontFamily: "'Ubuntu Mono', monospace" }}>{error}</div>;
   }
 
   if (!initial) {

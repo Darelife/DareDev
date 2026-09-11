@@ -10,10 +10,10 @@ const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   if (!blog) {
     return (
-      <div className="bg-black min-h-screen text-white flex items-center justify-center">
+      <div className="blog-article bg-[var(--appearance-canvas,#000)] min-h-screen text-[color:var(--appearance-ink,#fff)] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-red-400 mb-4">Blog Not Found</h1>
-          <Link href="/blog" className="text-red-400 hover:underline">
+          <h1 className="text-4xl font-bold text-[color:var(--appearance-accent,oklch(70.4%_0.191_22.216))] mb-4">Blog Not Found</h1>
+          <Link href="/blog" className="text-[color:var(--appearance-accent,oklch(70.4%_0.191_22.216))] hover:underline">
             Back to Blog
           </Link>
         </div>
@@ -28,14 +28,14 @@ const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
   }) : null;
 
   return (
-    <div className="bg-black text-white" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
+    <div className="blog-article bg-[var(--appearance-canvas,#000)] text-[color:var(--appearance-ink,#fff)]" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
       {/* Header Section */}
-      <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 px-6 sm:px-12 lg:px-24 py-16">
+      <div className="relative bg-gradient-to-br from-[var(--appearance-highlight,oklch(21%_0.034_264.665))] to-[var(--appearance-highlight,oklch(27.8%_0.033_256.848))] px-6 sm:px-12 lg:px-24 py-16">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}
           <Link
             href="/blog"
-            className="inline-flex items-center text-red-400 hover:text-red-300 transition-colors mb-8 group"
+            className="inline-flex items-center text-[color:var(--appearance-accent,oklch(70.4%_0.191_22.216))] hover:text-[color:var(--appearance-accent,oklch(80.8%_0.114_19.571))] transition-colors mb-8 group"
           >
             <svg className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -44,19 +44,19 @@ const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
           </Link>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white drop-shadow-[0_0_20px_rgba(255,0,0,0.8)] mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[color:var(--appearance-ink,#fff)] drop-shadow-[0_0_20px_rgba(255,0,0,0.8)] mb-6 leading-tight">
             {blog.title}
           </h1>
 
           {/* Description */}
           {blog.description && (
-            <p className="text-xl text-gray-300 mb-6 leading-relaxed">
+            <p className="text-xl text-[color:var(--appearance-muted,oklch(87.2%_0.01_258.338))] mb-6 leading-relaxed">
               {blog.description}
             </p>
           )}
 
           {/* Metadata */}
-          <div className="flex flex-wrap items-center gap-6 text-gray-400 mb-6">
+          <div className="flex flex-wrap items-center gap-6 text-[color:var(--appearance-muted,oklch(70.7%_0.022_261.325))] mb-6">
             {formattedDate && (
               <div className="flex items-center">
                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -87,7 +87,7 @@ const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
               {blog.tags.map((tag: string, index: number) => (
                 <span
                   key={index}
-                  className="px-3 py-1 text-sm bg-red-900/30 border border-red-500/30 rounded-full text-red-300"
+                  className="px-3 py-1 text-sm bg-[var(--appearance-wash,color-mix(in_oklab,oklch(39.6%_0.141_25.723)_30%,transparent))] border border-[var(--appearance-rule,color-mix(in_oklab,oklch(63.7%_0.237_25.331)_30%,transparent))] rounded-full text-[color:var(--appearance-accent,oklch(80.8%_0.114_19.571))]"
                 >
                   #{tag}
                 </span>

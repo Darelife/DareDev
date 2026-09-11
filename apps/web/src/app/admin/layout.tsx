@@ -14,9 +14,9 @@ const adminLinks = [
 ];
 
 const inputStyle: React.CSSProperties = {
-  backgroundColor: "#000",
-  color: "#00ff00",
-  border: "1px solid #00ff00",
+  backgroundColor: "var(--appearance-canvas, #000)",
+  color: "var(--appearance-success, #00ff00)",
+  border: "1px solid var(--appearance-rule, #00ff00)",
   fontFamily: "monospace",
   fontSize: "16px",
   padding: "6px",
@@ -27,8 +27,8 @@ const inputStyle: React.CSSProperties = {
 const buttonStyle: React.CSSProperties = {
   marginTop: "10px",
   padding: "5px 10px",
-  backgroundColor: "#00ff00",
-  color: "#000",
+  backgroundColor: "var(--appearance-highlight, #00ff00)",
+  color: "var(--appearance-ink, #000)",
   border: "none",
   fontFamily: "monospace",
   cursor: "pointer",
@@ -83,8 +83,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          backgroundColor: "#000",
-          color: "#00ff00",
+          backgroundColor: "var(--appearance-canvas, #000)",
+          color: "var(--appearance-success, #00ff00)",
           fontFamily: "monospace",
         }}
       >
@@ -101,13 +101,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          backgroundColor: "#000",
-          color: "#00ff00",
+          backgroundColor: "var(--appearance-canvas, #000)",
+          color: "var(--appearance-success, #00ff00)",
           fontFamily: "monospace",
           fontSize: "16px",
         }}
       >
-        <form onSubmit={handleLoginSubmit}>
+        <form className="admin-login" onSubmit={handleLoginSubmit}>
           <div style={{ marginBottom: "10px" }}>Admin Login</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px", minWidth: "280px" }}>
             <label htmlFor="admin-username">Username</label>
@@ -137,21 +137,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <button type="submit" style={buttonStyle}>
             Login
           </button>
-          {error && <div style={{ color: "#ff0000", marginTop: "10px" }}>{error}</div>}
+          {error && <div style={{ color: "var(--appearance-danger, #ff0000)", marginTop: "10px" }}>{error}</div>}
         </form>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#000", color: "#e3e3e3" }}>
+    <div className="admin-shell" style={{ minHeight: "100vh", backgroundColor: "var(--appearance-canvas, #000)", color: "var(--appearance-ink, #e3e3e3)" }}>
       <nav
         style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           padding: "12px 20px",
-          borderBottom: "1px solid #222",
+          borderBottom: "1px solid var(--appearance-rule, #222)",
           fontFamily: "'Ubuntu Mono', monospace",
           flexWrap: "wrap",
           gap: "10px",
@@ -159,19 +159,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       >
         <div style={{ display: "flex", gap: "18px", alignItems: "center", flexWrap: "wrap" }}>
           {adminLinks.map((l) => (
-            <Link key={l.href} href={l.href} style={{ color: "#e3e3e3", textDecoration: "none", fontSize: "13px" }}>
+            <Link key={l.href} href={l.href} style={{ color: "var(--appearance-ink, #e3e3e3)", textDecoration: "none", fontSize: "13px" }}>
               {l.name}
             </Link>
           ))}
         </div>
         <div style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "13px" }}>
-          <span style={{ color: "#888" }}>{user?.username}</span>
+          <span style={{ color: "var(--appearance-muted, #888)" }}>{user?.username}</span>
           <button
             onClick={() => void handleLogout()}
             style={{
               padding: "4px 10px",
-              background: "#ff0000",
-              color: "#fff",
+              background: "var(--appearance-highlight, #ff0000)",
+              color: "var(--appearance-ink, #fff)",
               border: "none",
               cursor: "pointer",
               fontFamily: "inherit",

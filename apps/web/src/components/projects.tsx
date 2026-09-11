@@ -62,7 +62,7 @@ function ProjectsHeading() {
             fontSize: 'clamp(3.5rem, 18vw, 18rem)',
             fontFamily: 'var(--font-inter), Inter, sans-serif',
             letterSpacing: '-0.04em',
-            color: '#fff',
+            color: 'var(--appearance-ink, #fff)',
             opacity: visible ? 0.04 : 0,
             transition: 'opacity 1.5s ease',
             transitionDelay: '200ms',
@@ -84,7 +84,7 @@ function ProjectsHeading() {
         <div
           className="h-px w-full"
           style={{
-            background: 'linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 30%, rgba(220,38,38,0.6) 70%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, var(--appearance-highlight, rgba(220,38,38,0.6)) 30%, var(--appearance-highlight, rgba(220,38,38,0.6)) 70%, transparent 100%)',
           }}
         />
       </div>
@@ -99,8 +99,8 @@ function ProjectsHeading() {
             style={{
               fontSize: 'clamp(2.2rem, 10vw, 7rem)',
               fontFamily: 'var(--font-inter), Inter, sans-serif',
-              color: visible ? '#fff' : 'transparent',
-              textShadow: visible ? '0 0 40px rgba(220,38,38,0.25)' : 'none',
+              color: visible ? 'var(--appearance-ink, #fff)' : 'transparent',
+              textShadow: visible ? 'var(--appearance-shadow, 0 0 40px rgba(220,38,38,0.25))' : 'none',
               transform: visible ? 'translateY(0) skewX(-4deg)' : 'translateY(60px) skewX(-4deg)',
               opacity: visible ? 1 : 0,
               transition: `transform 0.55s cubic-bezier(0.22,1,0.36,1), opacity 0.55s ease, color 0.4s ease`,
@@ -119,7 +119,7 @@ function ProjectsHeading() {
           className="h-px transition-all duration-700"
           style={{
             width: visible ? '100%' : '0%',
-            background: 'linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 30%, rgba(220,38,38,0.6) 70%, transparent 100%)',
+            background: 'linear-gradient(90deg, transparent 0%, var(--appearance-highlight, rgba(220,38,38,0.6)) 30%, var(--appearance-highlight, rgba(220,38,38,0.6)) 70%, transparent 100%)',
             transitionDelay: '700ms',
           }}
         />
@@ -127,8 +127,8 @@ function ProjectsHeading() {
         <div
           className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-500"
           style={{
-            background: 'rgba(220,38,38,0.9)',
-            boxShadow: '0 0 8px 2px rgba(220,38,38,0.5)',
+            background: 'var(--appearance-highlight, rgba(220,38,38,0.9))',
+            boxShadow: 'var(--appearance-shadow, 0 0 8px 2px rgba(220,38,38,0.5))',
             opacity: visible ? 1 : 0,
             transitionDelay: '900ms',
           }}
@@ -139,7 +139,7 @@ function ProjectsHeading() {
       <p
         className="text-xs sm:text-sm tracking-widest uppercase transition-all duration-700"
         style={{
-          color: 'rgba(255,255,255,0.3)',
+          color: 'var(--appearance-muted, rgba(255,255,255,0.3))',
           fontFamily: "'Ubuntu Mono', monospace",
           letterSpacing: '0.25em',
           opacity: visible ? 1 : 0,
@@ -163,7 +163,7 @@ function ProjectsLoadingState() {
         <span>retrieving builds</span>
         <span className="projects-loading-dots" aria-hidden="true">...</span>
       </div>
-      <div className="flex flex-col divide-y divide-white/5" aria-hidden="true">
+      <div className="flex flex-col divide-y divide-[var(--appearance-rule,color-mix(in_oklab,#fff_5%,transparent))]" aria-hidden="true">
         {[0, 1, 2, 3, 4].map((item) => (
           <div key={item} className="projects-skeleton-row">
             <div className="projects-skeleton-index" />
@@ -183,6 +183,7 @@ function ProjectsLoadingState() {
 export default function Projects() {
   const [projects, setProjects] = React.useState<any[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [hasError, setHasError] = React.useState(false);
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
@@ -193,12 +194,13 @@ export default function Projects() {
       })
       .catch((e) => {
         console.error('Failed to load projects:', e);
+        setHasError(true);
         setIsLoading(false);
       });
   }, []);
 
   return (
-    <div className="bg-black text-white px-4 sm:px-8 py-8" style={{ fontFamily: "'Ubuntu Mono', monospace" }}>
+    <div className="bg-[var(--appearance-canvas,#000)] text-[color:var(--appearance-ink,#fff)] px-4 sm:px-8 py-8" style={{ fontFamily: "'Ubuntu Mono', monospace" }}>
       <div className="max-w-5xl mx-auto">
 
         {/* ── Heading ── */}
@@ -208,9 +210,10 @@ export default function Projects() {
         <div className="mt-16 sm:mt-20" />
 
         {/* ── Project List ── */}
-        <div className="relative min-h-[760px]" aria-busy={isLoading}>
+        <div className="projects-content relative min-h-[760px]" aria-busy={isLoading}>
+          {!isLoading && projects.length === 0 && <p className="sketch-only sketch-status" role="status">{hasError ? "Projects couldn’t load. Please try again later." : "New projects will appear here soon."}</p>}
           {isLoading ? <ProjectsLoadingState /> : null}
-          <div className={`flex flex-col divide-y divide-white/5 projects-list ${isLoading ? 'projects-list-hidden' : 'projects-list-visible'}`}>
+          <div className={`flex flex-col divide-y divide-[var(--appearance-rule,color-mix(in_oklab,#fff_5%,transparent))] projects-list ${isLoading ? 'projects-list-hidden' : 'projects-list-visible'}`}>
           {projects.map((project, index) => {
             const isHovered = hoveredIndex === index;
             return (
@@ -220,7 +223,7 @@ export default function Projects() {
                 style={{
                   '--row-delay': `${Math.min(index, 8) * 75}ms`,
                   background: isHovered
-                    ? 'linear-gradient(90deg, rgba(220,38,38,0.06) 0%, transparent 80%)'
+                    ? 'linear-gradient(90deg, var(--appearance-wash, rgba(220,38,38,0.06)) 0%, transparent 80%)'
                     : 'transparent',
                 } as React.CSSProperties}
                 onMouseEnter={() => setHoveredIndex(index)}
@@ -230,8 +233,8 @@ export default function Projects() {
                 <div
                   className="absolute left-0 top-4 bottom-4 w-[2px] rounded-full transition-all duration-300"
                   style={{
-                    background: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.05)',
-                    boxShadow: isHovered ? '0 0 10px 2px rgba(220,38,38,0.45)' : 'none',
+                    background: isHovered ? 'var(--appearance-highlight, rgba(220,38,38,0.85))' : 'var(--appearance-wash, rgba(255,255,255,0.05))',
+                    boxShadow: isHovered ? 'var(--appearance-shadow, 0 0 10px 2px rgba(220,38,38,0.45))' : 'none',
                   }}
                 />
 
@@ -241,7 +244,7 @@ export default function Projects() {
                   <div
                     className="flex-shrink-0 w-7 text-right pt-0.5 tabular-nums transition-colors duration-300"
                     style={{
-                      color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.2)',
+                      color: isHovered ? 'var(--appearance-accent, rgba(220,38,38,0.85))' : 'var(--appearance-muted, rgba(255,255,255,0.2))',
                       fontSize: '0.75rem',
                       fontFamily: "'Ubuntu Mono', monospace",
                     }}
@@ -256,7 +259,7 @@ export default function Projects() {
                       className="font-semibold leading-snug mb-2.5 transition-colors duration-300"
                       style={{
                         fontSize: 'clamp(0.95rem, 2.5vw, 1.15rem)',
-                        color: isHovered ? '#fff' : 'rgba(255,255,255,0.82)',
+                        color: isHovered ? 'var(--appearance-ink, #fff)' : 'var(--appearance-ink, rgba(255,255,255,0.82))',
                         fontFamily: 'Inter, sans-serif',
                         letterSpacing: '-0.01em',
                       }}
@@ -268,7 +271,7 @@ export default function Projects() {
                     <p
                       className="text-sm leading-relaxed mb-5 transition-colors duration-300"
                       style={{
-                        color: isHovered ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.38)',
+                        color: isHovered ? 'var(--appearance-muted, rgba(255,255,255,0.6))' : 'var(--appearance-muted, rgba(255,255,255,0.38))',
                         fontFamily: 'Inter, sans-serif',
                         maxWidth: '62ch',
                       }}
@@ -284,8 +287,8 @@ export default function Projects() {
                           key={i}
                           className="text-[11px] px-2 py-0.5 rounded-sm border transition-all duration-300"
                           style={{
-                            borderColor: isHovered ? 'rgba(220,38,38,0.45)' : 'rgba(255,255,255,0.1)',
-                            color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.32)',
+                            borderColor: isHovered ? 'var(--appearance-rule, rgba(220,38,38,0.45))' : 'var(--appearance-rule, rgba(255,255,255,0.1))',
+                            color: isHovered ? 'var(--appearance-accent, rgba(220,38,38,0.85))' : 'var(--appearance-muted, rgba(255,255,255,0.32))',
                             fontFamily: "'Ubuntu Mono', monospace",
                             letterSpacing: '0.04em',
                           }}
@@ -310,17 +313,17 @@ export default function Projects() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-1.5 text-[11px] transition-all duration-200"
                             style={{
-                              color: isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.28)',
+                              color: isHovered ? 'var(--appearance-accent, rgba(220,38,38,0.85))' : 'var(--appearance-muted, rgba(255,255,255,0.28))',
                               textDecoration: 'none',
                               fontFamily: "'Ubuntu Mono', monospace",
                               letterSpacing: '0.04em',
                             }}
                             onMouseEnter={e => {
-                              (e.currentTarget as HTMLElement).style.color = '#fff';
-                              (e.currentTarget as HTMLElement).style.filter = 'drop-shadow(0 0 5px rgba(220,38,38,0.6))';
+                              (e.currentTarget as HTMLElement).style.color = 'var(--appearance-ink, #fff)';
+                              (e.currentTarget as HTMLElement).style.filter = 'var(--appearance-shadow, drop-shadow(0 0 5px rgba(220,38,38,0.6)))';
                             }}
                             onMouseLeave={e => {
-                              (e.currentTarget as HTMLElement).style.color = isHovered ? 'rgba(220,38,38,0.85)' : 'rgba(255,255,255,0.28)';
+                              (e.currentTarget as HTMLElement).style.color = isHovered ? 'var(--appearance-accent, rgba(220,38,38,0.85))' : 'var(--appearance-muted, rgba(255,255,255,0.28))';
                               (e.currentTarget as HTMLElement).style.filter = 'none';
                             }}
                           >

@@ -37,7 +37,7 @@ function BlogHeading() {
           className="h-px w-full"
           style={{
             background:
-              "linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 30%, rgba(220,38,38,0.6) 70%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, var(--appearance-highlight, rgba(220,38,38,0.6)) 30%, var(--appearance-highlight, rgba(220,38,38,0.6)) 70%, transparent 100%)",
           }}
         />
       </div>
@@ -51,8 +51,8 @@ function BlogHeading() {
             style={{
               fontSize: "clamp(3.5rem, 10vw, 7rem)",
               fontFamily: "var(--font-inter), Inter, sans-serif",
-              color: visible ? "#fff" : "transparent",
-              textShadow: visible ? "0 0 40px rgba(220,38,38,0.25)" : "none",
+              color: visible ? "var(--appearance-ink, #fff)" : "transparent",
+              textShadow: visible ? "var(--appearance-shadow, 0 0 40px rgba(220,38,38,0.25))" : "none",
               transform: visible
                 ? "translateY(0) skewX(-4deg)"
                 : "translateY(60px) skewX(-4deg)",
@@ -74,15 +74,15 @@ function BlogHeading() {
           style={{
             width: visible ? "100%" : "0%",
             background:
-              "linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.6) 30%, rgba(220,38,38,0.6) 70%, transparent 100%)",
+              "linear-gradient(90deg, transparent 0%, var(--appearance-highlight, rgba(220,38,38,0.6)) 30%, var(--appearance-highlight, rgba(220,38,38,0.6)) 70%, transparent 100%)",
             transitionDelay: "700ms",
           }}
         />
         <div
           className="absolute top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full transition-all duration-500"
           style={{
-            background: "rgba(220,38,38,0.9)",
-            boxShadow: "0 0 8px 2px rgba(220,38,38,0.5)",
+            background: "var(--appearance-highlight, rgba(220,38,38,0.9))",
+            boxShadow: "var(--appearance-shadow, 0 0 8px 2px rgba(220,38,38,0.5))",
             opacity: visible ? 1 : 0,
             transitionDelay: "900ms",
           }}
@@ -93,7 +93,7 @@ function BlogHeading() {
       <p
         className="text-xs sm:text-sm tracking-widest uppercase transition-all duration-700"
         style={{
-          color: "rgba(255,255,255,0.3)",
+          color: "var(--appearance-muted, rgba(255,255,255,0.3))",
           fontFamily: "'Ubuntu Mono', monospace",
           letterSpacing: "0.25em",
           opacity: visible ? 1 : 0,
@@ -110,6 +110,8 @@ function BlogHeading() {
 /* ─── Main component ─────────────────────────────────────────────────── */
 export default function Blog() {
   const [blogs, setBlogs] = React.useState<any[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [hasError, setHasError] = React.useState(false);
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
@@ -122,14 +124,15 @@ export default function Blog() {
         });
         setBlogs(sorted);
       })
-      .catch(console.error);
+      .catch(error => { console.error(error); setHasError(true); })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
     <>
       <Navbar />
       <div
-        className="min-h-screen bg-black text-white px-4 sm:px-8 py-8"
+        className="blog-index min-h-screen bg-[var(--appearance-canvas,#000)] text-[color:var(--appearance-ink,#fff)] px-4 sm:px-8 py-8"
         style={{ fontFamily: "'Ubuntu Mono', monospace" }}
       >
         <div className="max-w-5xl mx-auto">
@@ -139,17 +142,19 @@ export default function Blog() {
           {/* ── Gap ── */}
           <div className="mt-16 sm:mt-20" />
 
+          <p className="sketch-only sketch-status" role="status">{isLoading ? "Opening the notebook…" : hasError ? "The notebook couldn’t load. Please try again later." : blogs.length === 0 ? "The next page is still being written." : ""}</p>
+
           {/* ── Blog List ── */}
-          <div className="flex flex-col divide-y divide-white/5">
+          <div className="blog-list flex flex-col divide-y divide-[var(--appearance-rule,color-mix(in_oklab,#fff_5%,transparent))]">
             {blogs.map((blog, index) => {
               const isHovered = hoveredIndex === index;
               return (
                 <div
                   key={index}
-                  className="group relative py-7 sm:py-8 pl-5 sm:pl-8 pr-3 sm:pr-6 transition-all duration-300 cursor-default"
+                  className="blog-card group relative py-7 sm:py-8 pl-5 sm:pl-8 pr-3 sm:pr-6 transition-all duration-300 cursor-default"
                   style={{
                     background: isHovered
-                      ? "linear-gradient(90deg, rgba(220,38,38,0.06) 0%, transparent 80%)"
+                      ? "linear-gradient(90deg, var(--appearance-wash, rgba(220,38,38,0.06)) 0%, transparent 80%)"
                       : "transparent",
                   }}
                   onMouseEnter={() => setHoveredIndex(index)}
@@ -160,10 +165,10 @@ export default function Blog() {
                     className="absolute left-0 top-4 bottom-4 w-[2px] rounded-full transition-all duration-300"
                     style={{
                       background: isHovered
-                        ? "rgba(220,38,38,0.85)"
-                        : "rgba(255,255,255,0.05)",
+                        ? "var(--appearance-highlight, rgba(220,38,38,0.85))"
+                        : "var(--appearance-wash, rgba(255,255,255,0.05))",
                       boxShadow: isHovered
-                        ? "0 0 10px 2px rgba(220,38,38,0.45)"
+                        ? "var(--appearance-shadow, 0 0 10px 2px rgba(220,38,38,0.45))"
                         : "none",
                     }}
                   />
@@ -175,8 +180,8 @@ export default function Blog() {
                       className="flex-shrink-0 w-7 text-right pt-0.5 tabular-nums transition-colors duration-300"
                       style={{
                         color: isHovered
-                          ? "rgba(220,38,38,0.85)"
-                          : "rgba(255,255,255,0.2)",
+                          ? "var(--appearance-accent, rgba(220,38,38,0.85))"
+                          : "var(--appearance-muted, rgba(255,255,255,0.2))",
                         fontSize: "0.75rem",
                       }}
                     >
@@ -192,8 +197,8 @@ export default function Blog() {
                           style={{
                             fontSize: "clamp(0.95rem, 2.5vw, 1.15rem)",
                             color: isHovered
-                              ? "#fff"
-                              : "rgba(255,255,255,0.82)",
+                              ? "var(--appearance-ink, #fff)"
+                              : "var(--appearance-ink, rgba(255,255,255,0.82))",
                             fontFamily: "Inter, sans-serif",
                             letterSpacing: "-0.01em",
                           }}
@@ -207,8 +212,8 @@ export default function Blog() {
                         className="text-sm leading-relaxed mb-4 transition-colors duration-300"
                         style={{
                           color: isHovered
-                            ? "rgba(255,255,255,0.6)"
-                            : "rgba(255,255,255,0.38)",
+                            ? "var(--appearance-muted, rgba(255,255,255,0.6))"
+                            : "var(--appearance-muted, rgba(255,255,255,0.38))",
                           fontFamily: "Inter, sans-serif",
                           maxWidth: "62ch",
                         }}
@@ -224,8 +229,8 @@ export default function Blog() {
                             className="text-[11px] transition-colors duration-300"
                             style={{
                               color: isHovered
-                                ? "rgba(220,38,38,0.7)"
-                                : "rgba(255,255,255,0.22)",
+                                ? "var(--appearance-accent, rgba(220,38,38,0.7))"
+                                : "var(--appearance-muted, rgba(255,255,255,0.22))",
                             }}
                           >
                             {new Date(blog.date).toLocaleDateString("en-US", {
@@ -242,8 +247,8 @@ export default function Blog() {
                             className="text-[11px] transition-colors duration-300"
                             style={{
                               color: isHovered
-                                ? "rgba(220,38,38,0.7)"
-                                : "rgba(255,255,255,0.22)",
+                                ? "var(--appearance-accent, rgba(220,38,38,0.7))"
+                                : "var(--appearance-muted, rgba(255,255,255,0.22))",
                             }}
                           >
                             {blog.readTime} min read
@@ -259,11 +264,11 @@ export default function Blog() {
                               className="text-[11px] px-2 py-0.5 rounded-sm border transition-all duration-300"
                               style={{
                                 borderColor: isHovered
-                                  ? "rgba(220,38,38,0.45)"
-                                  : "rgba(255,255,255,0.1)",
+                                  ? "var(--appearance-rule, rgba(220,38,38,0.45))"
+                                  : "var(--appearance-rule, rgba(255,255,255,0.1))",
                                 color: isHovered
-                                  ? "rgba(220,38,38,0.85)"
-                                  : "rgba(255,255,255,0.32)",
+                                  ? "var(--appearance-accent, rgba(220,38,38,0.85))"
+                                  : "var(--appearance-muted, rgba(255,255,255,0.32))",
                                 letterSpacing: "0.04em",
                               }}
                             >
@@ -280,8 +285,8 @@ export default function Blog() {
                           className="flex items-center gap-1.5 text-[11px] transition-all duration-200"
                           style={{
                             color: isHovered
-                              ? "rgba(220,38,38,0.85)"
-                              : "rgba(255,255,255,0.28)",
+                              ? "var(--appearance-accent, rgba(220,38,38,0.85))"
+                              : "var(--appearance-muted, rgba(255,255,255,0.28))",
                             textDecoration: "none",
                             letterSpacing: "0.04em",
                           }}
