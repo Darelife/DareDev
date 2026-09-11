@@ -10,7 +10,7 @@ const inter = { fontFamily: 'var(--font-inter), Inter, sans-serif' };
 const FACTS = [
   { key: 'location', val: 'BITS Pilani, Goa' },
   { key: 'degree', val: 'B.E. Computer Science' },
-  { key: 'cf_rating', val: '1635 peak' },
+  { key: 'cf_rating', val: '1643 peak' },
   { key: 'coding_since', val: '2020' },
   { key: 'languages', val: 'Python · C++ · JS · GoLang' },
   { key: 'hobbies', val: 'Guitar · Cubing · Prog' },
