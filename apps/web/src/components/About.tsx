@@ -210,12 +210,12 @@ export default function About() {
                 built academic platforms with thousands of monthly visitors.
               </p>
               <p
-                className="leading-[1.9] text-white/30"
+                className="leading-[1.9] text-white/50"
                 style={{ ...inter, fontSize: 'clamp(0.875rem, 1.2vw, 0.975rem)' }}
               >
                 Grew up in Kuwait, schooled across Mumbai &amp; Jaipur, now at{' '}
                 <span className="text-white/50">BITS Pilani, Goa</span> doing CSE,
-                still hungry for the next hard problem. Currently Interning at <span className="text-white/50">Google</span> (Datastream, GCP)
+                still hungry for the next hard problem. Interned at <span className="text-white/50">Google</span> during the summer of 2026 (Datastream, GCP)
               </p>
             </div>
 
