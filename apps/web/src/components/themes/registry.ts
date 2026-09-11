@@ -8,4 +8,4 @@ export const THEME_STORAGE_KEY = 'daredev-theme';
 export const isThemeId = (value: unknown): value is ThemeId => themes.some(theme => theme.id === value);
 
 // Runs before first paint. Keep validation consistent with the registry.
-export const themeBootstrap = `(()=>{try{const t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});document.documentElement.dataset.theme=${JSON.stringify(themes.map(t => t.id))}.includes(t)?t:'original'}catch{document.documentElement.dataset.theme='original'}})()`;
+export const themeBootstrap = `(()=>{try{const k=${JSON.stringify(THEME_STORAGE_KEY)},ids=${JSON.stringify(themes.map(t => t.id))},s=sessionStorage.getItem(k),t=ids.includes(s)?s:ids[Math.floor(Math.random()*ids.length)];sessionStorage.setItem(k,t);document.documentElement.dataset.theme=t}catch{document.documentElement.dataset.theme='original'}})()`;

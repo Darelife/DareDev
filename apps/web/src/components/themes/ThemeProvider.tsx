@@ -28,7 +28,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     apply(committed.current);
     const sync = (event: StorageEvent) => {
       if (event.key !== THEME_STORAGE_KEY && event.key !== null) return;
-      committed.current = isThemeId(event.newValue) ? event.newValue : 'original';
+      committed.current = isThemeId(event.newValue) ? event.newValue : committed.current;
       if (!dialog.current?.open) apply(committed.current);
     };
     window.addEventListener('storage', sync);
@@ -82,7 +82,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   const preview = (id: ThemeId) => { setActive(id); apply(id); };
   const confirm = (id: ThemeId) => {
     committed.current = id;
-    try { localStorage.setItem(THEME_STORAGE_KEY, id); } catch { /* Selection still works for this visit. */ }
+    try { sessionStorage.setItem(THEME_STORAGE_KEY, id); } catch { /* Selection still works for this visit. */ }
     close();
   };
   const themeShortcut = 'Alt+T';

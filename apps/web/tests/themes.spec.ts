@@ -7,19 +7,18 @@ async function choose(page: Page, name: 'Original' | 'Sketchbook') {
   await page.getByRole('option', { name: new RegExp(name) }).click();
 }
 
-test('Original is the default; preview cancels, commits, and persists across routes', async ({ page }) => {
+test('A random theme is selected per session; preview cancels, commits, and persists across routes', async ({ page }) => {
   const errors: string[] = [];page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
-  await expect(html(page)).toHaveAttribute('data-theme', 'original');
-  await expect(page.locator('.original-hero')).toBeVisible();
-  await expect(page.locator('.sketch-canvas')).toHaveCount(0);
+  const initialTheme = await html(page).getAttribute('data-theme');
+  expect(['original', 'sketchbook']).toContain(initialTheme);
   await page.keyboard.press('Alt+t');
   await expect(picker(page)).toBeVisible();
   await page.keyboard.press('ArrowDown');
-  await expect(html(page)).toHaveAttribute('data-theme', 'sketchbook');
-  expect(await page.evaluate(key => localStorage.getItem(key), key)).toBeNull();
+  expect(await html(page).getAttribute('data-theme')).not.toBe(initialTheme);
+  expect(await page.evaluate(key => sessionStorage.getItem(key), key)).toBe(initialTheme);
   await page.keyboard.press('Escape');
-  await expect(html(page)).toHaveAttribute('data-theme', 'original');
+  await expect(html(page)).toHaveAttribute('data-theme', initialTheme!);
   await choose(page, 'Sketchbook');await page.reload();
   await expect(html(page)).toHaveAttribute('data-theme','sketchbook');
   await expect(page.locator('.sketch-canvas')).toBeVisible();
@@ -63,7 +62,8 @@ test('Alt+T opens themes; modified keys are ignored and navigation offers a UI o
 });
 
 test('invalid and blocked storage fall back without breaking switching', async ({ page }) => {
-  await page.addInitScript(key => localStorage.setItem(key,'unknown-theme'),key);await page.goto('/');await expect(html(page)).toHaveAttribute('data-theme','original');
+  await page.addInitScript(key => sessionStorage.setItem(key,'unknown-theme'),key);await page.goto('/');
+  expect(['original', 'sketchbook']).toContain(await html(page).getAttribute('data-theme'));
   await page.addInitScript(() => { Storage.prototype.getItem=()=>{throw new Error('blocked')};Storage.prototype.setItem=()=>{throw new Error('blocked')}; });
   await page.reload();await expect(html(page)).toHaveAttribute('data-theme','original');await choose(page,'Sketchbook');await expect(html(page)).toHaveAttribute('data-theme','sketchbook');
 });
