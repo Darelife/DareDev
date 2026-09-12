@@ -2,7 +2,18 @@
 import React from "react";
 import Link from "next/link";
 import Navbar from "../../components/navbar";
-import { getBlogList } from "../../lib/api-client";
+
+type StaticBlogPost = {
+  slug: string;
+  title: string;
+  description: string;
+  contentFile: string;
+  date?: string;
+  author?: string;
+  tags?: string[];
+  readTime?: number;
+  featured?: boolean;
+};
 
 /* ─── Animated heading (mirrors ProjectsHeading) ─────────────────────── */
 function BlogHeading() {
@@ -115,7 +126,13 @@ export default function Blog() {
   const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
 
   React.useEffect(() => {
-    getBlogList()
+    const controller = new AbortController();
+
+    fetch("/blogs.json", { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to load blogs (${response.status})`);
+        return response.json() as Promise<StaticBlogPost[]>;
+      })
       .then((data) => {
         const sorted = [...data].sort((a, b) => {
           if (a.date && b.date)
@@ -124,8 +141,14 @@ export default function Blog() {
         });
         setBlogs(sorted);
       })
-      .catch(error => { console.error(error); setHasError(true); })
+      .catch(error => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        console.error(error);
+        setHasError(true);
+      })
       .finally(() => setIsLoading(false));
+
+    return () => controller.abort();
   }, []);
 
   return (

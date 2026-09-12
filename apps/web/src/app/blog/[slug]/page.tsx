@@ -1,8 +1,33 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import { getBlogPost } from '../../../lib/api-client';
+import blogs from '../../../../public/blogs.json';
+
+type StaticBlogPost = (typeof blogs)[number];
+
+async function getBlogPost(slug: string): Promise<(StaticBlogPost & { body: string }) | null> {
+  const blog = blogs.find((entry) => entry.slug === slug);
+  if (!blog) return null;
+
+  // contentFile is metadata committed alongside the site. basename prevents a
+  // future typo in blogs.json from escaping the public/blogs directory.
+  if (path.basename(blog.contentFile) !== blog.contentFile) return null;
+
+  try {
+    const body = await fs.readFile(
+      path.join(process.cwd(), 'public', 'blogs', blog.contentFile),
+      'utf8',
+    );
+    return { ...blog, body };
+  } catch (error) {
+    console.error(`Could not read blog content file: ${blog.contentFile}`, error);
+    return null;
+  }
+}
+
+export function generateStaticParams() {
+  return blogs.map((blog) => ({ slug: blog.slug }));
+}
 
 const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
@@ -101,9 +126,8 @@ const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
       <div className="px-6 sm:px-12 lg:px-24 py-16">
         <div className="max-w-4xl mx-auto">
           <article className="blog-content prose prose-invert max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-              {blog.body}
-            </ReactMarkdown>
+            {/* These HTML files are trusted, repository-owned blog content. */}
+            <div dangerouslySetInnerHTML={{ __html: blog.body }} />
           </article>
         </div>
       </div>

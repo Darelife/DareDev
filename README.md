@@ -42,8 +42,16 @@ npm run dev
 # apps/web on :3000, apps/api on :4000
 ```
 
-The public site fetches from `apps/api`; the admin panel at `/admin` on
-`apps/web` requires the seeded account to log in.
+Projects and resources fetch from `apps/api`; blog pages are file-backed. The
+admin panel at `/admin` on `apps/web` requires the seeded account to log in.
+
+## Writing blog posts
+
+The public blog is file-backed and does not require the database. Add the post
+metadata to `apps/web/public/blogs.json`, then write its `contentFile` as basic
+HTML under `apps/web/public/blogs/`. The `/blog/[slug]` page supplies the title,
+metadata, theme, and article styling around that HTML. Deploy the web project
+to publish the change.
 
 ## Firebase task database
 
