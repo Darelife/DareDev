@@ -1,9 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import blogs from '../../../../public/blogs.json';
+import { embedTitle } from '../../../lib/embed-title';
 
 type StaticBlogPost = (typeof blogs)[number];
 
@@ -29,6 +31,21 @@ async function getBlogPost(slug: string): Promise<(StaticBlogPost & { body: stri
 
 export function generateStaticParams() {
   return blogs.map((blog) => ({ slug: blog.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = blogs.find((entry) => entry.slug === slug);
+  if (!blog) return { title: 'Blog Not Found' };
+
+  const title = embedTitle(blog.title);
+  const description = blog.description;
+  return {
+    title,
+    description,
+    openGraph: { type: 'article', title, description },
+    twitter: { card: 'summary', title, description },
+  };
 }
 
 const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
