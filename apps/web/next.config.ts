@@ -18,6 +18,7 @@ const csp = [
   "img-src 'self' data: blob:",
   "font-src 'self' data:",
   "worker-src 'self' blob:",
+  "frame-src 'self'",
   `connect-src 'self' ${apiUrl} https://cloud.umami.is`,
   "object-src 'none'",
   "frame-ancestors 'none'",
