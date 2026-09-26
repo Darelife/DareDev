@@ -20,5 +20,16 @@
     "tags": ["cicd", "github", "devops"],
     "readTime": 2,
     "featured": true
+  },
+  {
+    "slug":"competitive-programming-with-zed",
+    "title": "Competitive Programming with Zed",
+    "description": "Learn how to use Zed for competitive programming.",
+    "contentFile": "competitiveProgrammingZED.md",
+    "date": "2025-08-01",
+    "author": "Prakhar Bhandari",
+    "tags": ["competitive programming", "zed", "tutorial"],
+    "readTime": 3,
+    "featured": true
   }
 ]
