@@ -1,6 +1,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import blogs from '../../../../public/blogs.json';
 
 type StaticBlogPost = (typeof blogs)[number];
@@ -126,8 +128,7 @@ const BlogPost = async ({ params }: { params: Promise<{ slug: string }> }) => {
       <div className="px-6 sm:px-12 lg:px-24 py-16">
         <div className="max-w-4xl mx-auto">
           <article className="blog-content prose prose-invert max-w-none">
-            {/* These HTML files are trusted, repository-owned blog content. */}
-            <div dangerouslySetInnerHTML={{ __html: blog.body }} />
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{blog.body}</ReactMarkdown>
           </article>
         </div>
       </div>
