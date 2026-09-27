@@ -302,6 +302,32 @@ export default function Home() {
                   <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.268c-.966 0-1.75-.784-1.75-1.75s.784-1.75 1.75-1.75 1.75.784 1.75 1.75-.784 1.75-1.75 1.75zm13.5 11.268h-3v-5.604c0-1.337-.025-3.063-1.868-3.063-1.868 0-2.154 1.459-2.154 2.967v5.7h-3v-10h2.881v1.367h.041c.401-.761 1.381-1.563 2.845-1.563 3.045 0 3.607 2.005 3.607 4.614v5.582z" />
                 </svg>
               </a>
+              {/* Codeforces */}
+              <a
+                href="https://codeforces.com/profile/darelife"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Codeforces"
+                className="hover:scale-110 transition-transform"
+              >
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--appearance-ink, white)" aria-hidden="true">
+                  <path d="M2.5 10h5v11h-5zM9.5 3h5v18h-5zM16.5 7h5v14h-5z" />
+                </svg>
+              </a>
+              {/* Resume */}
+              <a
+                href="/resume"
+                aria-label="Resume"
+                className="hover:scale-110 transition-transform"
+              >
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--appearance-ink, white)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                  <path d="M6 2.75h9l3 3V21.25H6z" />
+                                  <path d="M15 2.75v3h3" />
+                                  <path d="M9 10h6" />
+                                  <path d="M9 13.5h6" />
+                                  <path d="M9 17h4" />
+                                </svg>
+              </a>
               {/* Mail */}
               <a
                 href="mailto:prakharb2k6@gmail.com"
